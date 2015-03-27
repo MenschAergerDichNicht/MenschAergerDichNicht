@@ -1,11 +1,13 @@
 package logik;
 
+import java.util.Map;
+
 
 
 public class Spielfigur {
 
 	private final Spieler spieler;
-	private int position;
+	private int position = -1;
 	private int heimatfeld;
 	
 	public Spielfigur (Spieler spieler) {
@@ -39,8 +41,5 @@ public class Spielfigur {
 	public int getPosition() {
 		return position;
 	}
-	
-	public void bewegeFigur(int felderVor) {
-		
-	}
+
 }

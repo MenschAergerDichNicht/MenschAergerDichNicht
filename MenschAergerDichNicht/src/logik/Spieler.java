@@ -6,24 +6,18 @@ import java.util.List;
 
 public class Spieler {
 	
-	private final int spielernummer;
 	private final Color farbe;
 	private List<Spielfigur> spielfiguren;
 	private int startfeld;
 	private final int anzahlSpielfiguren = 4;
 	
-	public Spieler(int id, Color farbe, int startfeld) {
-		spielernummer = id;
+	public Spieler(Color farbe, int startfeld) {
 		this.farbe = farbe;
 		spielfiguren = new ArrayList<>();
 		for(int i = 0; i < anzahlSpielfiguren; i++) {
 			spielfiguren.add(new Spielfigur(this));
 		}
 		spielfiguren = Collections.unmodifiableList(spielfiguren);
-	}
-	
-	public int getID() {
-		return spielernummer;
 	}
 	
 	public Color getFarbe() {

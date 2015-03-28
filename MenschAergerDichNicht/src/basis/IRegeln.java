@@ -11,5 +11,6 @@ public interface IRegeln {
 	public void positionsKonflikt(Spielfigur ziehender, Spielfigur stehender);
 	public void bewegeFigur(List<Spieler> alleSpieler, Spielfigur figur, int felderVor);
 	public boolean bewegenMoeglich(List<Spieler> alleSpieler, Spielfigur figur, int augenzahl);
-	public List<Spielfigur> getOptionen(Spieler amZug, int augenzahl);
+	public List<Spielfigur> getOptionen(List<Spieler> alleSpieler, Spieler amZug, int augenzahl);
+	public boolean gewonnen(Spieler spieler);
 }

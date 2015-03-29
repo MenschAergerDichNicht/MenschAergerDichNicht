@@ -8,6 +8,11 @@ import java.util.Observable;
 
 import basis.IRegeln;
 
+/**
+ * Repräsentation des Spielbretts auf dem das Spiel stattfindet. Jede View
+ * sollte ausschließlich mit einer Instanz dieser Klasse zusammenarbeiten.
+ * @author ole
+ */
 public class Spielbrett extends Observable{
 
 	private List<Spieler> spieler;
@@ -19,13 +24,22 @@ public class Spielbrett extends Observable{
 	private Map<Integer, Spielfigur> figurAusPosition = new HashMap<>();
 	
 	
+	/**
+	 * @param spieler eine Liste von Spielern die Teilnehmen
+	 * @param regeln das Regelobjekt für den gewünschten Spielablauf
+	 */
 	public Spielbrett (List<Spieler> spieler, IRegeln regeln) {
 		this.spieler = spieler;	
 		this.regeln = regeln;
 	}
 	
+	/**
+	 * Eine Figur vorwärts bewegen.
+	 * @param figur die Figur die Vorwärts bewegt werden soll.
+	 * @param felderVor die Augenzahl des Würfels.
+	 */
 	public void bewegeFigur(Spielfigur figur, int felderVor) {
-		regeln.bewegeFigur(spieler, figur, felderVor);
+		regeln.bewegeFigur(figurAusPosition, figur, felderVor);
 		aktualisiereMap();
 		
 		setChanged();
@@ -36,16 +50,27 @@ public class Spielbrett extends Observable{
 		}
 	}
 	
+	/**
+	 * @param figur die Figur, die auf das zum Spieler gehörende Startfeld gesetzt werden soll.
+	 */
 	public void setzeFigurInsFeld(Spielfigur figur) {
 		int startfeld = figur.getSpieler().getStartfeld();
 		figur.setPosition(startfeld);
 		figurAusPosition.put(startfeld, figur);
 	}
 	
+	/**
+	 * @param figur die Figur, die überprüft werde soll.
+	 * @return true, wenn sie mit der vorliegenden Augenzahl bewegt werden kann.
+	 */
 	public boolean bewegenMoeglich(Spielfigur figur) {
-		return regeln.bewegenMoeglich(spieler, figur, letzteAugenzahl);
+		return regeln.bewegenMoeglich(figurAusPosition, figur, letzteAugenzahl);
 	}
 	
+	/**
+	 * Aktualisiert die Map, welche Positionsinteger nimmt und die zugehörigen
+	 * Figuren ausgibt. Wird nur dann ausgeführt, wenn eine Figur bewegt wird.
+	 */
 	private void aktualisiereMap() {
 		figurAusPosition = new HashMap<>();
 		for(Spieler spieler: spieler) {
@@ -57,6 +82,11 @@ public class Spielbrett extends Observable{
 		}
 	}
 	
+	/**
+	 * Liefert nicht nur eine zufällige Augenzahl zurück, sondern speichert das
+	 * Ergebnis als letzte Augenzahl im Spielbrett.
+	 * @return die Augenzahl des Würfels der im Regelobjekt definiert ist.
+	 */
 	public int wuerfeln() {
 		anzahlWuerfe++;
 		letzteAugenzahl = regeln.wuerfel();
@@ -65,6 +95,10 @@ public class Spielbrett extends Observable{
 		return letzteAugenzahl;
 	}
 	
+	/**
+	 * @param position der Integer der eine Position auf dem Spielfeld repräsentiert.
+	 * @return die Figur auf dem Spielfeld, null wenn keine Figur vorhanden.
+	 */
 	public Spielfigur gibFigurAufPosition(int position) {
 		if(figurAusPosition.containsKey(position)) {
 			return figurAusPosition.get(position);
@@ -73,6 +107,9 @@ public class Spielbrett extends Observable{
 	}
 	
 
+	/**
+	 * Dies beendet den Zug des Spielers der gerade dran ist.
+	 */
 	public void zugFertig() {
 		anzahlWuerfe = 0;
 		if(werIstDran.hasNext()) {
@@ -83,19 +120,28 @@ public class Spielbrett extends Observable{
 			amZug = werIstDran.next();
 		}
 		setChanged();
-		notifyObservers();
+		notifyObservers(amZug);
 	}
 
+	/**
+	 * @return eine Liste von Spielern
+	 */
 	public List<Spieler> getSpieler() {
 		return spieler;
 	}
 	
+	/**
+	 * @return der Spieler der gerade dran ist.
+	 */
 	public Spieler getAmZug() {
 		return amZug;
 	}
 
+	/**
+	 * @return eine Liste von Figuren, die mit der aktuellen Augenzahl ziehen können. Die Liste ist leer, wenn keine solche Option existiert.
+	 */
 	public List<Spielfigur> getOptionen() {
-		return regeln.getOptionen(spieler, amZug, letzteAugenzahl);
+		return regeln.getOptionen(figurAusPosition, amZug, letzteAugenzahl);
 	}
 	
 }

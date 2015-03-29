@@ -49,19 +49,34 @@ public class Spielfigur {
 	/**
 	 * 
 	 * @param position der Integer, der die neue Position repräsentiert
+	 * Wenn dieser Wert < 0 ist, steht die Figur nicht auf dem Feld.
 	 */
 	public void setPosition(int position) {
 		this.position = position;
 	}
 	
+	/**
+	 * Die Zielfelder, in die die Spielfiguren zuletzt einlaufen müssen.
+	 * Sollten von 1 bis 4 gehen.
+	 * @param heimatfeld der Integer, der das aktuelle Heimatfeld repräsentiert.
+	 */
 	public void setHeimatfeld(int heimatfeld) {
 		this.heimatfeld = heimatfeld;
 	}
 	
+	/**
+	 * Die Zielfelder, in die die Spielfiguren zuletzt einlaufen müssen.
+	 * Sollten von 1 bis 4 gehen.
+	 * @return heimatfeld der Integer, der das aktuelle Heimatfeld repräsentiert.
+	 */
 	public int getHeimatfeld() {
 		return heimatfeld;
 	}
 
+	/**
+	 * @return der Integer, der die aktuelle Position auf dem Spielfeld repräsentiert.
+	 * Wenn dieser Wert < 0 ist, steht die Figur nicht auf dem Feld.
+	 */
 	public int getPosition() {
 		return position;
 	}

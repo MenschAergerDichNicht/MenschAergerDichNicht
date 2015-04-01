@@ -36,7 +36,7 @@ public class Einstellungen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Einstellungen frame = new Einstellungen(new Controller());
+					Einstellungen frame = new Einstellungen(new EinstellungsController());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +48,7 @@ public class Einstellungen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Einstellungen(Controller controller) {
+	public Einstellungen(EinstellungsController controller) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);

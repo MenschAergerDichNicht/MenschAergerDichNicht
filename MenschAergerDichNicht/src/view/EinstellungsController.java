@@ -13,7 +13,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-public class Controller implements ActionListener {
+public class EinstellungsController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

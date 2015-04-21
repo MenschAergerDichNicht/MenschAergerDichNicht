@@ -43,7 +43,7 @@ public class Spielbrett extends Observable{
 		aktualisiereMap();
 		
 		setChanged();
-		notifyObservers();
+		notifyObservers(figur);
 		
 		if(!regeln.nochMalWuerfeln(amZug, anzahlWuerfe, felderVor)) {
 			zugFertig();
@@ -91,7 +91,7 @@ public class Spielbrett extends Observable{
 		anzahlWuerfe++;
 		letzteAugenzahl = regeln.wuerfel();
 		setChanged();
-		notifyObservers();
+		notifyObservers(letzteAugenzahl);
 		return letzteAugenzahl;
 	}
 	

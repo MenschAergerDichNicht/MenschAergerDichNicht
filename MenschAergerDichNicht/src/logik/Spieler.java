@@ -25,6 +25,7 @@ public class Spieler {
 	public Spieler(Color farbe, int startfeld, String name) {
 		this.farbe = farbe;
 		this.name = name;
+		this.startfeld = startfeld;
 		spielfiguren = new ArrayList<>();
 		for(int i = 0; i < anzahlSpielfiguren; i++) {
 			spielfiguren.add(new Spielfigur(this));

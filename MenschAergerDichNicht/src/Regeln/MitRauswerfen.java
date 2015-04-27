@@ -63,13 +63,13 @@ public class MitRauswerfen implements IRegeln{
 		
 		if(bewegenMoeglich(figurAusPosition, figur, felderVor) == true){
 			//andere Figur schmei�en
-			for(int i=1; i<=4;i++){
+			for(int i=0; i<4;i++){
 				if(figurAusPosition.get(neuePos) != null && 
-						figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(i).getSpieler() != figurAusPosition.get(figur).getSpieler() ){
+						figur.getSpieler() != figurAusPosition.get(neuePos).getSpieler() ){
 					figurAusPosition.get(neuePos).setPosition(-1);
 				}
 			}
-			figurAusPosition.put(neuePos, figur);
+			figur.setPosition(neuePos);
 		}
 	}
 
@@ -90,21 +90,22 @@ public class MitRauswerfen implements IRegeln{
 		int neuePos = figur.getPosition() + augenzahl;
 		
 		//Bei 6 nur aus Haus ziehen
-		if(augenzahl==6 && figur.getPosition()>0 && ( figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(1).getPosition()<0
-			||figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(2).getPosition()<0||
-			figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(3).getPosition()<0||
-			figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(4).getPosition()<0)){
+		if(augenzahl==6 && figur.getPosition()>0 && ( figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(0).getPosition()<0
+			||figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(1).getPosition()<0||
+			figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(2).getPosition()<0||
+			figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(3).getPosition()<0)){
 			return false;
 		}
 		
-		//Wenn eigene Figur da steht     funzt get(Spieler)?
-		if (figurAusPosition.put(neuePos, figur).getPosition() == figurAusPosition.get(spieler).getPosition()){
+		//Wenn eigene Figur da steht    
+		if (figurAusPosition.get(neuePos) != null  &&
+				figurAusPosition.get(neuePos).getSpieler() == figur.getSpieler()){
 			return false;
 		}
 		
 		//Wenn alle im Haus stehen und keine 6 gew�rfelt wurde
-		for(int i=1; i<=4; i++){
-			if(augenzahl != 6 && figurAusPosition.get(figur).getSpieler().getSpielfiguren().get(i).getPosition() < 0){
+		for(int i=0; i<=3; i++){
+			if(augenzahl != 6 && figur.getSpieler().getSpielfiguren().get(i).getPosition() < 0){
 				zaehler++;
 			}
 			if(zaehler == 4){

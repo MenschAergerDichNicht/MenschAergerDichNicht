@@ -8,12 +8,12 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.GridLayout;
-
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
@@ -22,7 +22,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 
-public class Einstellungen extends JFrame {
+public class Einstellungen extends JFrame{
 
 	/**
 	 * 
@@ -36,7 +36,7 @@ public class Einstellungen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Einstellungen frame = new Einstellungen(new EinstellungsController());
+					Einstellungen frame = new Einstellungen(new Controller());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +48,7 @@ public class Einstellungen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Einstellungen(EinstellungsController controller) {
+	public Einstellungen(Controller controller) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
@@ -61,7 +61,7 @@ public class Einstellungen extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel spielTitel = new JLabel("Mensch Ã„rgere Dich Nicht");
+		JLabel spielTitel = new JLabel("Mensch Ärgere Dich Nicht");
 		spielTitel.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		spielTitel.setHorizontalAlignment(SwingConstants.CENTER);
 		spielTitel.setBounds(0, 0, 688, 24);
@@ -108,7 +108,7 @@ public class Einstellungen extends JFrame {
 		heimregel.setBounds(500, 243, 130, 15);
 		panel.add(heimregel);
 		
-		JComboBox<String> heimregelComboBox = new JComboBox<>(new String[]{"nicht Ã¼berspringen","Ã¼berspringen"});
+		JComboBox<String> heimregelComboBox = new JComboBox<>(new String[]{"nicht überspringen","überspringen"});
 		heimregelComboBox.setBounds(495, 260, 160, 24);
 		panel.add(heimregelComboBox);
 		
@@ -118,19 +118,19 @@ public class Einstellungen extends JFrame {
 		JLabel farbe = new JLabel("Farbe");
 		farbe.setHorizontalAlignment(SwingConstants.CENTER);
 		farbe.setBounds(132, 150, 60, 30);
-		farbe.setBorder(border);
 		panel.add(farbe);
 		
 		JLabel computer = new JLabel("Computer");
 		computer.setHorizontalAlignment(SwingConstants.CENTER);
 		computer.setBounds(202, 150, 80, 30);
-		computer.setBorder(border);
 		panel.add(computer);
 		
-		JLabel spieler1 = new JLabel("Spieler 1");
+		JTextField spieler1 = new JTextField("Spieler 1");
+		spieler1.setForeground(Color.GRAY);
 		spieler1.setHorizontalAlignment(SwingConstants.CENTER);
 		spieler1.setBounds(20, 185, 100, 30);
 		spieler1.setBorder(border);
+		spieler1.addMouseListener(controller);
 		panel.add(spieler1);
 		
 		JButton spieler1Farbe = new JButton();
@@ -140,10 +140,12 @@ public class Einstellungen extends JFrame {
 		spieler1Farbe.addActionListener(controller);
 		panel.add(spieler1Farbe);
 		
-		JLabel spieler2 = new JLabel("Spieler 2");
+		JTextField spieler2 = new JTextField("Spieler 2");
+		spieler2.setForeground(Color.GRAY);
 		spieler2.setHorizontalAlignment(SwingConstants.CENTER);
 		spieler2.setBounds(20, 220, 100, 30);
 		spieler2.setBorder(border);
+		spieler2.addMouseListener(controller);
 		panel.add(spieler2);
 		
 		JButton spieler2Farbe = new JButton();
@@ -158,10 +160,12 @@ public class Einstellungen extends JFrame {
 		checkBoxComputerSpieler2.setBounds(202, 220, 80, 30);
 		panel.add(checkBoxComputerSpieler2);
 		
-		JLabel spieler3 = new JLabel("Spieler 3");
+		JTextField spieler3 = new JTextField("Spieler 3");
+		spieler3.setForeground(Color.GRAY);
 		spieler3.setHorizontalAlignment(SwingConstants.CENTER);
 		spieler3.setBounds(20, 255, 100, 30);
 		spieler3.setBorder(border);
+		spieler3.addMouseListener(controller);
 		panel.add(spieler3);
 		
 		JButton spieler3Farbe = new JButton();
@@ -176,10 +180,12 @@ public class Einstellungen extends JFrame {
 		checkBoxComputerSpieler3.setBounds(202, 255, 80, 30);
 		panel.add(checkBoxComputerSpieler3);
 		
-		JLabel spieler4 = new JLabel("Spieler 4");
+		JTextField spieler4 = new JTextField("Spieler 4");
+		spieler4.setForeground(Color.GRAY);
 		spieler4.setHorizontalAlignment(SwingConstants.CENTER);
 		spieler4.setBounds(20, 290, 100, 30);
 		spieler4.setBorder(border);
+		spieler4.addMouseListener(controller);
 		panel.add(spieler4);
 		
 		JButton spieler4Farbe = new JButton();
@@ -194,11 +200,12 @@ public class Einstellungen extends JFrame {
 		checkBoxComputerSpieler4.setBounds(202, 290, 80, 30);
 		panel.add(checkBoxComputerSpieler4);
 		
-		JLabel spieler5 = new JLabel("Spieler 5");
+		JTextField spieler5 = new JTextField("Spieler 5");
 		spieler5.setForeground(Color.LIGHT_GRAY);
 		spieler5.setHorizontalAlignment(SwingConstants.CENTER);
 		spieler5.setBounds(20, 325, 100, 30);
 		spieler5.setBorder(disabledBorder);
+		spieler5.addMouseListener(controller);
 		panel.add(spieler5);
 		
 		JButton spieler5Farbe = new JButton();
@@ -216,11 +223,12 @@ public class Einstellungen extends JFrame {
 		checkBoxComputerSpieler5.setActionCommand("computerSpieler5");
 		panel.add(checkBoxComputerSpieler5);
 		
-		JLabel spieler6 = new JLabel("Spieler 6");
+		JTextField spieler6 = new JTextField("Spieler 6");
 		spieler6.setForeground(Color.LIGHT_GRAY);
 		spieler6.setHorizontalAlignment(SwingConstants.CENTER);
 		spieler6.setBounds(20, 360, 100, 30);
 		spieler6.setBorder(disabledBorder);
+		spieler6.addMouseListener(controller);
 		panel.add(spieler6);
 		
 		JButton spieler6Farbe = new JButton();
@@ -248,6 +256,8 @@ public class Einstellungen extends JFrame {
 		
 		JButton regelnButton = new JButton("Regeln");
 		regelnButton.setBounds(470, 420, 90, 25);
+		regelnButton.setActionCommand("regeln");
+		regelnButton.addActionListener(controller);
 		panel.add(regelnButton);
 	}
 }

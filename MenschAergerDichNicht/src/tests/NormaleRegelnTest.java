@@ -84,7 +84,7 @@ public class NormaleRegelnTest {
 		
 		brett.bewegeFigur(olesFigur, 6);
 		
-		assertEquals(olesFigur.getPosition(), 6);
+		assertEquals(6, olesFigur.getPosition());
 		
 		brett.bewegeFigur(olesFigur, 4);
 		

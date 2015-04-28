@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class EinstellungsController implements ActionListener, MouseListener {
 
@@ -34,10 +34,10 @@ public class EinstellungsController implements ActionListener, MouseListener {
 			// Einstellungen für Spieler 5 und 6 Verfügbar machen.
 			if(combobox.getSelectedIndex() == 1) {
 				for(Component component:combobox.getParent().getComponents()) {
-					if(component.getForeground().equals(Color.LIGHT_GRAY)) {
-						JLabel label = (JLabel) component;
-						label.setForeground(Color.BLACK);
-						label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+					if(component.getForeground().equals(Color.GRAY)) {
+						JTextField textfield = (JTextField) component;
+						textfield.setForeground(Color.GRAY);
+						textfield.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 					}
 					if(!component.isVisible()) {
 						component.setVisible(true);
@@ -48,12 +48,13 @@ public class EinstellungsController implements ActionListener, MouseListener {
 			// Einstellungen für Spieler 5 und 6 wieder verstecken.
 			else {
 				for(Component component:combobox.getParent().getComponents()) {
-					if(component.getClass().equals(JLabel.class)) {
-						JLabel label = (JLabel) component;
-						if(label.getText().equals("Spieler 5") ||
-								label.getText().equals("Spieler 6")) {
-							label.setForeground(Color.LIGHT_GRAY);
-							label.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
+					if(component.getClass().equals(JTextField.class)) {
+						JTextField textfield = (JTextField) component;
+						if(textfield.getText().equals("Spieler 5") ||
+								textfield.getText().equals("Spieler 6")) {
+//							textfield.setForeground(Color.LIGHT_GRAY);
+//							textfield.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
+							textfield.setVisible(false);
 						}
 					}
 					else if(component.getClass().equals(JCheckBox.class)

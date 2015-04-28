@@ -201,10 +201,11 @@ public class Einstellungen extends JFrame{
 		panel.add(checkBoxComputerSpieler4);
 		
 		JTextField spieler5 = new JTextField("Spieler 5");
-		spieler5.setForeground(Color.LIGHT_GRAY);
+		spieler5.setForeground(Color.GRAY);
 		spieler5.setHorizontalAlignment(SwingConstants.CENTER);
 		spieler5.setBounds(20, 325, 100, 30);
 		spieler5.setBorder(disabledBorder);
+		spieler5.setVisible(false);
 		spieler5.addMouseListener(controller);
 		panel.add(spieler5);
 		
@@ -224,10 +225,11 @@ public class Einstellungen extends JFrame{
 		panel.add(checkBoxComputerSpieler5);
 		
 		JTextField spieler6 = new JTextField("Spieler 6");
-		spieler6.setForeground(Color.LIGHT_GRAY);
+		spieler6.setForeground(Color.GRAY);
 		spieler6.setHorizontalAlignment(SwingConstants.CENTER);
 		spieler6.setBounds(20, 360, 100, 30);
 		spieler6.setBorder(disabledBorder);
+		spieler6.setVisible(false);
 		spieler6.addMouseListener(controller);
 		panel.add(spieler6);
 		

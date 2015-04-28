@@ -36,7 +36,7 @@ public class Einstellungen extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Einstellungen frame = new Einstellungen(new Controller());
+					Einstellungen frame = new Einstellungen(new EinstellungsController());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +48,7 @@ public class Einstellungen extends JFrame{
 	/**
 	 * Create the frame.
 	 */
-	public Einstellungen(Controller controller) {
+	public Einstellungen(EinstellungsController controller) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
@@ -61,7 +61,7 @@ public class Einstellungen extends JFrame{
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel spielTitel = new JLabel("Mensch Ärgere Dich Nicht");
+		JLabel spielTitel = new JLabel("Mensch ï¿½rgere Dich Nicht");
 		spielTitel.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		spielTitel.setHorizontalAlignment(SwingConstants.CENTER);
 		spielTitel.setBounds(0, 0, 688, 24);
@@ -108,7 +108,7 @@ public class Einstellungen extends JFrame{
 		heimregel.setBounds(500, 243, 130, 15);
 		panel.add(heimregel);
 		
-		JComboBox<String> heimregelComboBox = new JComboBox<>(new String[]{"nicht überspringen","überspringen"});
+		JComboBox<String> heimregelComboBox = new JComboBox<>(new String[]{"nicht ï¿½berspringen","ï¿½berspringen"});
 		heimregelComboBox.setBounds(495, 260, 160, 24);
 		panel.add(heimregelComboBox);
 		

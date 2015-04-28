@@ -79,8 +79,8 @@ public class NormaleRegelnTest {
 		brett.setzeFigurInsFeld(olesFigur);
 		brett.setzeFigurInsFeld(leasFigur);
 		
-		assertEquals(olesFigur.getPosition(), 0);
-		assertEquals(leasFigur.getPosition(), 10);
+		assertEquals(0, olesFigur.getPosition());
+		assertEquals(10, leasFigur.getPosition());
 		
 		brett.bewegeFigur(olesFigur, 6);
 		
@@ -88,7 +88,7 @@ public class NormaleRegelnTest {
 		
 		brett.bewegeFigur(olesFigur, 4);
 		
-		assertEquals(olesFigur.getPosition(), 10);
+		assertEquals(10, olesFigur.getPosition());
 		assertTrue(leasFigur.getPosition() < 0);
 		
 		//TODO Ziehen ins Zielfeld

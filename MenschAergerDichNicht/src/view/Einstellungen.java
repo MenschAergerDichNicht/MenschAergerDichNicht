@@ -17,12 +17,17 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JCheckBox;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 
 public class Einstellungen extends JFrame{
+	
+	public Map<Integer, SpielerEinstellungen> spielereinstellungen = 
+			new HashMap<>();
 
 	/**
 	 * 
@@ -140,6 +145,8 @@ public class Einstellungen extends JFrame{
 		spieler1Farbe.addActionListener(controller);
 		panel.add(spieler1Farbe);
 		
+		spielereinstellungen.put(1, new SpielerEinstellungen(spieler1, spieler1Farbe));
+		
 		JTextField spieler2 = new JTextField("Spieler 2");
 		spieler2.setForeground(Color.GRAY);
 		spieler2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -159,6 +166,10 @@ public class Einstellungen extends JFrame{
 		checkBoxComputerSpieler2.setHorizontalAlignment(SwingConstants.CENTER);
 		checkBoxComputerSpieler2.setBounds(202, 220, 80, 30);
 		panel.add(checkBoxComputerSpieler2);
+		
+		spielereinstellungen.put(2, new SpielerEinstellungen(
+				spieler2, spieler2Farbe, checkBoxComputerSpieler2)
+		);
 		
 		JTextField spieler3 = new JTextField("Spieler 3");
 		spieler3.setForeground(Color.GRAY);
@@ -180,6 +191,10 @@ public class Einstellungen extends JFrame{
 		checkBoxComputerSpieler3.setBounds(202, 255, 80, 30);
 		panel.add(checkBoxComputerSpieler3);
 		
+		spielereinstellungen.put(3, new SpielerEinstellungen(
+				spieler3, spieler3Farbe, checkBoxComputerSpieler3)
+		);
+		
 		JTextField spieler4 = new JTextField("Spieler 4");
 		spieler4.setForeground(Color.GRAY);
 		spieler4.setHorizontalAlignment(SwingConstants.CENTER);
@@ -199,6 +214,10 @@ public class Einstellungen extends JFrame{
 		checkBoxComputerSpieler4.setHorizontalAlignment(SwingConstants.CENTER);
 		checkBoxComputerSpieler4.setBounds(202, 290, 80, 30);
 		panel.add(checkBoxComputerSpieler4);
+		
+		spielereinstellungen.put(4, new SpielerEinstellungen(
+				spieler4, spieler4Farbe, checkBoxComputerSpieler4)
+		);
 		
 		JTextField spieler5 = new JTextField("Spieler 5");
 		spieler5.setForeground(Color.GRAY);
@@ -223,6 +242,10 @@ public class Einstellungen extends JFrame{
 		checkBoxComputerSpieler5.setVisible(false);
 		checkBoxComputerSpieler5.setActionCommand("computerSpieler5");
 		panel.add(checkBoxComputerSpieler5);
+
+		spielereinstellungen.put(5, new SpielerEinstellungen(
+				spieler5, spieler5Farbe, checkBoxComputerSpieler5)
+		);
 		
 		JTextField spieler6 = new JTextField("Spieler 6");
 		spieler6.setForeground(Color.GRAY);
@@ -248,12 +271,18 @@ public class Einstellungen extends JFrame{
 		checkBoxComputerSpieler6.setActionCommand("computerSpieler6");
 		panel.add(checkBoxComputerSpieler6);
 		
+		spielereinstellungen.put(6, new SpielerEinstellungen(
+				spieler6, spieler6Farbe, checkBoxComputerSpieler6)
+		);
+		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(0, 402, 688, 15);
 		panel.add(separator);
 		
 		JButton startButton = new JButton("Start");
 		startButton.setBounds(575, 420, 80, 25);
+		startButton.setActionCommand("start");
+		startButton.addActionListener(controller);
 		panel.add(startButton);
 		
 		JButton regelnButton = new JButton("Regeln");

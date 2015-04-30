@@ -28,6 +28,7 @@ public class Einstellungen extends JFrame{
 	
 	public Map<Integer, SpielerEinstellungen> spielereinstellungen = 
 			new HashMap<>();
+	
 
 	/**
 	 * 

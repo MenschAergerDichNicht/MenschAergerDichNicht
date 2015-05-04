@@ -17,8 +17,8 @@ public class Spielbrett extends Observable{
 
 	private List<Spieler> spieler;
 	private IRegeln regeln;
-	private Iterator<Spieler> werIstDran = spieler.iterator();
-	private Spieler amZug = werIstDran.next();
+	private Iterator<Spieler> werIstDran;
+	private Spieler amZug;
 	private int anzahlWuerfe = 0;
 	private int letzteAugenzahl = 0;
 	private Map<Integer, Spielfigur> figurAusPosition = new HashMap<>();
@@ -31,6 +31,9 @@ public class Spielbrett extends Observable{
 	public Spielbrett (List<Spieler> spieler, IRegeln regeln) {
 		this.spieler = spieler;	
 		this.regeln = regeln;
+		
+		werIstDran = spieler.iterator();
+		amZug = werIstDran.next();
 	}
 	
 	/**
@@ -43,7 +46,7 @@ public class Spielbrett extends Observable{
 		aktualisiereMap();
 		
 		setChanged();
-		notifyObservers();
+		notifyObservers(figur);
 		
 		if(!regeln.nochMalWuerfeln(amZug, anzahlWuerfe, felderVor)) {
 			zugFertig();
@@ -91,7 +94,7 @@ public class Spielbrett extends Observable{
 		anzahlWuerfe++;
 		letzteAugenzahl = regeln.wuerfel();
 		setChanged();
-		notifyObservers();
+		notifyObservers(letzteAugenzahl);
 		return letzteAugenzahl;
 	}
 	

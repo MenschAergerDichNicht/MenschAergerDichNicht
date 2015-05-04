@@ -61,6 +61,9 @@ public class Spielfigur {
 	 * @param heimatfeld der Integer, der das aktuelle Heimatfeld repräsentiert.
 	 */
 	public void setHeimatfeld(int heimatfeld) {
+		if(heimatfeld > 0) {
+			position = -1;
+		}
 		this.heimatfeld = heimatfeld;
 	}
 	

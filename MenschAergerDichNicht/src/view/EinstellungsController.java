@@ -73,8 +73,8 @@ public class EinstellungsController implements ActionListener, MouseListener {
 			break;
 		
 		case "start":
-			Einstellungen einstellungen = (Einstellungen) (((JComponent) e.getSource()).getTopLevelAncestor());
-			System.out.println(einstellungen.spielereinstellungen.get(1));
+			Einstellungen einstellungsframe = (Einstellungen) (((JComponent) e.getSource()).getTopLevelAncestor());
+			
 			break;
 
 		

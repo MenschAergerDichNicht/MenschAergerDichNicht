@@ -26,8 +26,9 @@ import javax.swing.JButton;
 
 public class Einstellungen extends JFrame{
 	
-	public Map<Integer, SpielerEinstellungen> spielereinstellungen = 
+	private Map<Integer, SpielerEinstellungen> spielereinstellungen = 
 			new HashMap<>();
+	public Spieleinstellungen spieleinstellungen;
 	
 
 	/**
@@ -291,5 +292,13 @@ public class Einstellungen extends JFrame{
 		regelnButton.setActionCommand("regeln");
 		regelnButton.addActionListener(controller);
 		panel.add(regelnButton);
+		
+		spieleinstellungen = new Spieleinstellungen(
+				spielereinstellungen,
+				groessenComboBox,
+				felderComboBox,
+				rauswerfenComboBox,
+				heimregelComboBox				
+				);
 	}
 }

@@ -35,5 +35,28 @@ public class Spieleinstellungen {
 		return 6;
 	}
 	
+	public boolean sichereFelder() {
+		if(felderComboBox.getSelectedIndex() == 0) {
+			return false;
+		}
+		return true;
+	}
 	
+	public boolean mitRauswerfen() {
+		if(rauswerfenComboBox.getSelectedIndex() == 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean ueberspringenimHeimatbereich() {
+		if(heimregelComboBox.getSelectedIndex() == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public SpielerEinstellungen getSpielereinstellungen(int spielernummer) {
+		return spielereinstellungen.get(spielernummer);
+	}
 }

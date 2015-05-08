@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -74,7 +75,20 @@ public class EinstellungsController implements ActionListener, MouseListener {
 		
 		case "start":
 			Einstellungen einstellungsframe = (Einstellungen) (((JComponent) e.getSource()).getTopLevelAncestor());
+
+			break;
 			
+		case "regel":
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						Anleitung frame = new Anleitung();
+						frame.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
 			break;
 
 		

@@ -1,37 +1,17 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Menu;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Ellipse2D;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
 
-import logik.Spielbrett;
-import logik.Spieler;
 
 public class SpielbrettGui extends JFrame {
 
@@ -52,6 +32,7 @@ public class SpielbrettGui extends JFrame {
 	protected JComponent getSpielfeld() {
 		JPanel spielfeld = new JPanel();
 		spielfeld.setLayout(new GridBagLayout());
+		spielfeld.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		//Array der Spielfelder, noch mit spieler verbinden
 		int[][] weiss = {{5,6,5,7,5,7,5,7,2,3,4,5,7,8,9,10,11,1,11,1,2,3,4,5,7,8,9,10,5,7,5,7,5,7,6,7},{1,1,2,2,3,3,4,4,5,5,5,5,5,5,5,5,5,6,6,7,7,7,7,7,7,7,7,7,8,8,9,9,10,10,11,11}};
@@ -100,10 +81,53 @@ public class SpielbrettGui extends JFrame {
 	protected JComponent getAnzeige() {
 		JPanel anzeige = new JPanel();
 		anzeige.setLayout(new BorderLayout());
-		anzeige.setSize(250, getHeight());
+		anzeige.add(getWuerfel(), BorderLayout.SOUTH);
+//		anzeige.setSize(250, getHeight());
 		return anzeige;
 	}
 	
+	protected JComponent getWuerfel() {
+		JPanel wuerfel = new JPanel();
+		wuerfel.setLayout(new GridBagLayout());
+		
+		int[][] center = {{1},{1}};
+		int[][] linksOben = {{0,2},{0,2}};
+		int[][] linksUnten = {{0,2},{2,0}};
+		int[][] mitte = {{0,2},{1,1}};
+		
+		//Mittelpunkt
+		for(int i = 0; i < center.length-1; i++) {
+			for(int j = 0; j < center[i].length; j++) {
+				wuerfel.add(new Kreis(Color.BLACK), getPosition(center[i][j], center[i+1][j]));
+			}
+		}
+		
+		//linksOben
+		for(int i = 0; i < linksOben.length-1; i++) {
+			for(int j = 0; j < linksOben[i].length; j++) {
+				wuerfel.add(new Kreis(Color.GREEN), getPosition(linksOben[i][j], linksOben[i+1][j]));
+			}
+		}
+		
+		//linksUnten
+		for(int i = 0; i < linksUnten.length-1; i++) {
+			for(int j = 0; j < linksUnten[i].length; j++) {
+				wuerfel.add(new Kreis(Color.RED), getPosition(linksUnten[i][j], linksUnten[i+1][j]));
+			}
+		}
+		
+		//mitte
+		for(int i = 0; i < mitte.length-1; i++) {
+			for(int j = 0; j < mitte[i].length; j++) {
+				wuerfel.add(new Kreis(Color.CYAN), getPosition(mitte[i][j], mitte[i+1][j]));
+			}
+		}
+		
+		return wuerfel;
+	}
+	/**
+	 * Position der einzelnen Kreise
+	 * */
 	protected GridBagConstraints getPosition (int x, int y) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, 0, 5, 5);

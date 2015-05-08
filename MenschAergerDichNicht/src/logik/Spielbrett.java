@@ -57,6 +57,7 @@ public class Spielbrett extends Observable{
 	 * @param figur die Figur, die auf das zum Spieler gehörende Startfeld gesetzt werden soll.
 	 */
 	public void setzeFigurInsFeld(Spielfigur figur) {
+		//TODO Überprüfen ob Feld von Figur besetzt
 		int startfeld = figur.getSpieler().getStartfeld();
 		figur.setPosition(startfeld);
 		figurAusPosition.put(startfeld, figur);

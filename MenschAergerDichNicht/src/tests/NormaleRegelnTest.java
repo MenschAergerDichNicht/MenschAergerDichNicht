@@ -91,6 +91,37 @@ public class NormaleRegelnTest {
 		assertEquals(10, olesFigur.getPosition());
 		assertTrue(leasFigur.getPosition() < 0);
 		
+		olesFigur.setPosition(0);
+		
+		Spielfigur olesZweiteFigur = ole.getSpielfiguren().get(1);
+		
+		brett.bewegeFigur(olesFigur, 3);
+		brett.setzeFigurInsFeld(olesZweiteFigur);
+		brett.bewegeFigur(olesZweiteFigur, 3);
+		
+		assertEquals(0, olesZweiteFigur.getPosition());
+		
+		brett.setzeFigurInsFeld(ole.getSpielfiguren().get(2));
+		
+		assertTrue(ole.getSpielfiguren().get(2).getPosition() < 0);
+		
+		olesFigur.setPosition(39);
+		brett.bewegeFigur(olesFigur, 1);
+		assertTrue(olesFigur.getPosition() < 0);
+		assertEquals(1, olesFigur.getHeimatfeld());
+		
+		olesFigur.setPosition(-1);
+		olesFigur.setHeimatfeld(1);
+		olesZweiteFigur.setPosition(-1);
+		olesZweiteFigur.setHeimatfeld(2);
+		
+		for(int i = 0; i <= 3; i++) {
+			brett.bewegeFigur(olesFigur, i);
+		}
+		
+		assertEquals(1, olesFigur.getHeimatfeld());
+		
+		
 		//TODO Ziehen ins Zielfeld
 		
 	}
@@ -112,21 +143,31 @@ public class NormaleRegelnTest {
 		
 		brett.setzeFigurInsFeld(olesFigur);
 		brett.setzeFigurInsFeld(leasFigur);
+		
+		//TODO Bewegen möglich wenn Figur im Weg?
+		//TODO Bewegen möglich wenn Figur im Zielfeld im Weg?
+		//TODO Bewegen möglich wenn Figur anderswo schlagbar?
+		
+		
+		//assertEquals(10, leasFigur.getPosition()); //Im Controller oder Modell überprüfen?
 
-		//TODO Bewegen möglich wenn Spieler nicht am Zug?
-		//TODO Bewegen möglich wenn eigene Figur im Weg?
-		//TODO Bewegen möglich wenn eigene Figur im Zielfeld im Weg?
 	}
 	
 	@Test
 	public void testGetOptionen() {
-		//TODO Repariere Bewegung
-		fail("Noch nicht geschrieben.");
+		//TODO Vier Optionen wenn 6 zu Beginn?
+		//TODO Eine Option wenn Figur auf Startfeld?
+		//TODO Die richtige Option, wenn eine Figur auf dem Startfeld, andere im Weg?
+		//TODO Die richtge Option, wenn eine Figur schlagbar?
+		//TODO Zwei Optionen wenn eine Figur im Zielfeld, die andere auf dem Feld?
 	}
 	
 	@Test
 	public void testGewonnen() {
-		//TODO Schreiben ;)
-		fail("Noch nicht geschrieben.");
+		for(int i = 0; i <= 3; i++) {
+			spielerliste.get(0).getSpielfiguren().get(i).setHeimatfeld(i + 1);
+		}
+		
+		assertTrue(regeln.gewonnen(spielerliste.get(0)));
 	}
 }

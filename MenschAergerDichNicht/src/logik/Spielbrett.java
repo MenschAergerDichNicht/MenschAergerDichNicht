@@ -54,13 +54,22 @@ public class Spielbrett extends Observable{
 	}
 	
 	/**
+	 * Setzt eine Figur auf das Startfeld ihres Spielers. Wenn dort bereits
+	 * eine Figur des eigenen Spielers steht, passiert nichts.
+	 * Wenn dort die Figur eines anderen Spielers steht, wird sie geschlagen.
 	 * @param figur die Figur, die auf das zum Spieler gehörende Startfeld gesetzt werden soll.
 	 */
 	public void setzeFigurInsFeld(Spielfigur figur) {
-		//TODO Überprüfen ob Feld von Figur besetzt
 		int startfeld = figur.getSpieler().getStartfeld();
-		figur.setPosition(startfeld);
-		figurAusPosition.put(startfeld, figur);
+		if(figurAusPosition.get(startfeld) == null) {
+			figur.setPosition(startfeld);
+			figurAusPosition.put(startfeld, figur);
+		}
+		else if(figurAusPosition.get(startfeld).getSpieler() != figur.getSpieler()) {
+			figurAusPosition.get(startfeld).setPosition(-1);
+			figur.setPosition(startfeld);
+			figurAusPosition.put(startfeld, figur);
+		}
 	}
 	
 	/**

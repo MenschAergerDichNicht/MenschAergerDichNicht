@@ -3,8 +3,11 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import logik.Spielbrett;
 import logik.Spieler;
@@ -121,17 +124,19 @@ public class NormaleRegelnTest {
 		
 		assertEquals(1, olesFigur.getHeimatfeld());
 		
-		
-		//TODO Ziehen ins Zielfeld
-		
 	}
 	
 	@Test
-	public void testBewegenMoeglich() {
+	public void testBewegenMoeglich() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field field = Spielbrett.class.getDeclaredField("figurAusPosition");
+		field.setAccessible(true);
+		
+		
 		Spieler ole = spielerliste.get(0);
 		Spieler lea = spielerliste.get(1);
 		
 		Spielfigur olesFigur = ole.getSpielfiguren().get(0);
+		Spielfigur olesZweiteFigur = ole.getSpielfiguren().get(1);
 		Spielfigur leasFigur = lea.getSpielfiguren().get(0);
 		
 		brett = new Spielbrett(spielerliste, regeln);
@@ -142,11 +147,33 @@ public class NormaleRegelnTest {
 		assertFalse(brett.bewegenMoeglich(olesFigur));
 		
 		brett.setzeFigurInsFeld(olesFigur);
-		brett.setzeFigurInsFeld(leasFigur);
+				
+		olesFigur.setPosition(-1);
+		olesZweiteFigur.setPosition(-1);
 		
-		//TODO Bewegen möglich wenn Figur im Weg?
-		//TODO Bewegen möglich wenn Figur im Zielfeld im Weg?
-		//TODO Bewegen möglich wenn Figur anderswo schlagbar?
+		olesFigur.setHeimatfeld(1);
+		olesZweiteFigur.setHeimatfeld(2);
+
+		@SuppressWarnings("unchecked")
+		Map<Integer, Spielfigur> figurAusPosition = (Map<Integer, Spielfigur>) field.get(brett);
+		for(int i = 1; i <=4; i++) {
+			assertFalse(regeln.bewegenMoeglich(figurAusPosition, olesFigur, i));
+		}
+		
+		
+		//Bewegen möglich wenn Figur anderswo schlagbar?
+		Map<Integer, Spielfigur> figurAusPositionNeu = new HashMap<>();
+		
+		figurAusPositionNeu.put(0, olesFigur);
+		figurAusPositionNeu.put(1, leasFigur);
+		figurAusPositionNeu.put(2, olesZweiteFigur);
+		
+		olesFigur.setPosition(0);
+		olesZweiteFigur.setPosition(2);
+		leasFigur.setPosition(1);
+		
+		//Bewegen sollte für die zweite Figur nicht möglich sein, da leas Figur auf 1 schlagbar ist.
+		assertFalse(regeln.bewegenMoeglich(figurAusPositionNeu, olesZweiteFigur, 1));
 		
 		
 		//assertEquals(10, leasFigur.getPosition()); //Im Controller oder Modell überprüfen?

@@ -181,12 +181,54 @@ public class NormaleRegelnTest {
 	}
 	
 	@Test
-	public void testGetOptionen() {
-		//TODO Vier Optionen wenn 6 zu Beginn?
-		//TODO Eine Option wenn Figur auf Startfeld?
-		//TODO Die richtige Option, wenn eine Figur auf dem Startfeld, andere im Weg?
-		//TODO Die richtge Option, wenn eine Figur schlagbar?
-		//TODO Zwei Optionen wenn eine Figur im Zielfeld, die andere auf dem Feld?
+	public void testGetOptionen() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		Field field = Spielbrett.class.getDeclaredField("figurAusPosition");
+		field.setAccessible(true);
+		brett = new Spielbrett(spielerliste, regeln);
+		
+		@SuppressWarnings("unchecked")
+		Map<Integer, Spielfigur> figurAusPosition = (Map<Integer, Spielfigur>) field.get(brett);
+		//Vier Optionen wenn 6 zu Beginn?
+		Spieler ole = spielerliste.get(0);
+		assertEquals(4, regeln.getOptionen(figurAusPosition, ole, 6).size());
+		
+		Spielfigur olesFigur = ole.getSpielfiguren().get(0);
+		
+		brett.setzeFigurInsFeld(olesFigur);
+		
+		//Eine Option wenn Figur auf Startfeld?
+		
+		for(int i = 1; i <= 6; i++) {
+			assertEquals(1, regeln.getOptionen(figurAusPosition, ole, i).size());
+		}
+		
+		Spielfigur olesZweiteFigur = ole.getSpielfiguren().get(1);
+		Spieler lea = spielerliste.get(1);
+		Spielfigur leasFigur = lea.getSpielfiguren().get(0);
+		
+		olesZweiteFigur.setPosition(2);
+		leasFigur.setPosition(1);
+		
+		figurAusPosition.put(0, olesFigur);
+		figurAusPosition.put(1, leasFigur);
+		figurAusPosition.put(2, olesZweiteFigur);
+		
+		//Die richtige Option, wenn eine Figur auf dem Startfeld, andere im Weg?
+		assertTrue(regeln.getOptionen(figurAusPosition, ole, 2).get(0) == olesZweiteFigur);
+		
+		//Die richtge Option, wenn eine Figur schlagbar?
+		assertTrue(regeln.getOptionen(figurAusPosition, ole, 1).get(0) == olesFigur);
+		assertEquals(1, regeln.getOptionen(figurAusPosition, ole, 1).size());
+		
+		//Zwei Optionen wenn eine Figur im Zielfeld, die andere auf dem Feld?
+		figurAusPosition.remove(0);
+		olesFigur.setHeimatfeld(1);
+		olesFigur.setPosition(-1);
+		
+		for(int i = 1; i <= 3; i++) {
+			assertEquals(2, regeln.getOptionen(figurAusPosition, ole, i).size());
+		}
+		
 	}
 	
 	@Test

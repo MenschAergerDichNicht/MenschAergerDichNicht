@@ -2,11 +2,10 @@ package view;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
-class Kreis extends JPanel {
+class Kreis extends JComponent {
 	  /**
 	 * 
 	 */
@@ -15,11 +14,12 @@ class Kreis extends JPanel {
 	  public Kreis(Color color) {
 		  this.color = color;
 	  }
+	  @Override
 	  public void paintComponent(Graphics g) {
-		  Graphics2D g2d = (Graphics2D) g;
-		  g2d.setColor(Color.BLACK);
-		  g2d.drawOval(0, 0, this.getHeight(), this.getHeight());
-		  g2d.setColor(color);
-		  g2d.fillOval(0, 0, this.getHeight(), this.getHeight());
+		  g.setColor(Color.BLACK);
+		  g.fillOval(0, 0, getHeight(), getWidth());
+		  g.setColor(color);
+		  int randbreite = (int) (getWidth() * 0.10);
+		  g.fillOval(randbreite, randbreite, getWidth() - (2 * randbreite), getHeight() - (2 * randbreite));
 	    } 
 }

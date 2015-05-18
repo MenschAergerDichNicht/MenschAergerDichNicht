@@ -61,7 +61,7 @@ public class MitRauswerfen implements IRegeln{
 		int momPos = figur.getPosition();
 		int neuePos = momPos+felderVor;
 		
-		if(bewegenMoeglich(figurAusPosition, figur, felderVor) == true){
+		if(bewegenMoeglich(figurAusPosition, figur, felderVor) == true && neuePos < 40){
 			//andere Figur schmei�en
 			for(int i=0; i<4;i++){
 				if(figurAusPosition.get(neuePos) != null && 
@@ -70,6 +70,15 @@ public class MitRauswerfen implements IRegeln{
 				}
 			}
 			figur.setPosition(neuePos);
+		}
+		
+		if(neuePos >= 40){
+			int felderZuLaufen = felderVor;
+			for(; momPos<=38; felderZuLaufen--){
+				figur.setPosition(momPos+1);
+				momPos++;
+			}
+			figur.setHeimatfeld(felderZuLaufen);
 		}
 	}
 
@@ -84,8 +93,6 @@ public class MitRauswerfen implements IRegeln{
 	public boolean bewegenMoeglich(Map<Integer, Spielfigur> figurAusPosition,
 			Spielfigur figur, int augenzahl) {
 		// TODO Auto-generated method stub
-		Spieler spieler;
-		spieler = figur.getSpieler();
 		int zaehler=0;
 		int neuePos = figur.getPosition() + augenzahl;
 		
@@ -147,10 +154,12 @@ public class MitRauswerfen implements IRegeln{
 		// TODO Auto-generated method stub
 		int zaehler=0;
 		for(int i=0; i<4; i++){
-			if(spieler.getSpielfiguren().get(i).getPosition() == spieler.getSpielfiguren().get(i).getHeimatfeld()){
+			if(spieler.getSpielfiguren().get(i).getHeimatfeld() == 1 || spieler.getSpielfiguren().get(i).getHeimatfeld() == 2
+					|| spieler.getSpielfiguren().get(i).getHeimatfeld() == 3 || spieler.getSpielfiguren().get(i).getHeimatfeld() == 4){
 				zaehler++;
 			}
 		}
+		
 		if(zaehler == 4){
 			return true;
 		}else{

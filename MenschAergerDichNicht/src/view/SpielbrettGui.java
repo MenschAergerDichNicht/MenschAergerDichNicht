@@ -7,11 +7,16 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import Regeln.MitRauswerfen;
+import logik.Spielbrett;
+import logik.Spieler;
 
 
 public class SpielbrettGui extends JFrame {
@@ -20,15 +25,44 @@ public class SpielbrettGui extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private final int[][] feldKoordinatenZuPosition = {
+			{00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+			{00, 00, 00, 00, 00, 10,  9,  8, 00, 00, 00, 00},
+			{00, 00, 00, 00, 00, 11,201,  7, 00, 00, 00, 00},
+			{00, 00, 00, 00, 00, 12,203,  6, 00, 00, 00, 00},
+			{00, 00, 00, 00, 00, 13,204,  5, 00, 00, 00, 00},
+			{00, 18, 17, 16, 15, 14,205,  4,  3,  2,  1,  0},
+			{00, 19,301,302,303,304, 00,104,103,102,101, 39},
+			{00, 20, 21, 22, 23, 24,404, 34, 35, 36, 37, 38},
+			{00, 00, 00, 00, 00, 25,403, 33, 00, 00, 00, 00},
+			{00, 00, 00, 00, 00, 26,402, 32, 00, 00, 00, 00},
+			{00, 00, 00, 00, 00, 27,401, 31, 00, 00, 00, 00},
+			{00, 00, 00, 00, 00, 28, 29, 30, 00, 00, 00, 00}
+			};
+	private SpielController controller;
+	private Spielbrett spielbrett;
+	
 	public static void main(String args[]) {
-		SpielbrettGui sbg = new SpielbrettGui();
+		LinkedList<Spieler> spieler = new LinkedList<>();
+		spieler.add(new Spieler(Color.RED, 0, "Ole"));
+		spieler.add(new Spieler(Color.GREEN, 10, "Franzi"));
+		spieler.add(new Spieler(Color.BLUE, 20, "Laura"));
+		spieler.add(new Spieler(Color.YELLOW, 30, "Alex"));
+		
+		Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen());
+		
+		SpielbrettGui sbg = new SpielbrettGui(brett);
 		sbg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		sbg.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		sbg.setSize(800, 615);
 		sbg.setVisible(true);
 	}
 	
-	public SpielbrettGui() {
+	public SpielbrettGui(Spielbrett brett) {
+		
+		spielbrett = brett;
+		controller = new SpielController(brett);
+		
 		Container pane = getContentPane();
 		pane.setLayout(new BorderLayout());
 		pane.add(getSpielfeld(), BorderLayout.CENTER);
@@ -50,17 +84,21 @@ public class SpielbrettGui extends JFrame {
 		byte[][] spieler4 = {{10,11,11,10,11,7,8,9,10},{11,11,10,10,7,6,6,6,6}};
 		
 		zeichnen(weiss, spielfeld, Color.WHITE);
-		zeichnen(spieler1, spielfeld, Color.RED);
-		zeichnen(spieler2, spielfeld, Color.GREEN);
-		zeichnen(spieler3, spielfeld, Color.BLUE);
-		zeichnen(spieler4, spielfeld, Color.YELLOW);
+		zeichnen(spieler1, spielfeld, spielbrett.getSpieler().get(0).getFarbe());
+		zeichnen(spieler2, spielfeld, spielbrett.getSpieler().get(1).getFarbe());
+		zeichnen(spieler3, spielfeld, spielbrett.getSpieler().get(2).getFarbe());
+		zeichnen(spieler4, spielfeld, spielbrett.getSpieler().get(3).getFarbe());
 		
 		return spielfeld;
 	}
 	protected void zeichnen(byte[][] x, JComponent jc, Color color) {
 		for(int i = 0; i < x.length-1; i++) {
 			for(int j = 0; j < x[i].length; j++) {
-				jc.add(new Kreis(color), getPosition(x[i][j], x[i+1][j]));
+				System.out.println(i + "," + j);
+				Kreis kreis = new Kreis(color, feldKoordinatenZuPosition[x[i][j]][x[i+1][j]]);
+				spielbrett.addObserver(kreis);
+				kreis.addMouseListener(controller);
+				jc.add(kreis, getPosition(x[i][j], x[i+1][j]));
 			}
 		}
 	}
@@ -76,6 +114,7 @@ public class SpielbrettGui extends JFrame {
 	
 	protected JComponent getWuerfel() {
 		Wuerfel wuerfel = new Wuerfel();
+		wuerfel.addMouseListener(controller);
 		wuerfel.setPreferredSize(new Dimension(180, 200));
 		wuerfel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		return wuerfel;

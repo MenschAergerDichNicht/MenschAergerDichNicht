@@ -33,9 +33,9 @@ class Kreis extends JComponent implements Observer{
 	  @Override
 	  public void paintComponent(Graphics g) {
 		  g.setColor(Color.BLACK);
-		  g.fillOval(0, 0, getHeight(), getWidth());
+		  g.fillOval(0, 0, getWidth(), getHeight());
 		  g.setColor(color);
-		  int randbreite = (int) (getWidth() * 0.10);
+		  int randbreite = (int) (getHeight() * 0.10);
 		  g.fillOval(randbreite, randbreite, getWidth() - (2 * randbreite), getHeight() - (2 * randbreite));
 		  
 		  if(besetzer != null) {

@@ -1,4 +1,4 @@
-package Regeln;
+package regeln;
 
 import java.util.List;
 import java.util.Map;

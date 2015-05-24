@@ -14,7 +14,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Regeln.MitRauswerfen;
+import regeln.MitRauswerfen;
 import logik.Spielbrett;
 import logik.Spieler;
 

@@ -17,7 +17,7 @@ import logik.Spielfigur;
 import org.junit.Before;
 import org.junit.Test;
 
-import Regeln.MitRauswerfen;
+import regeln.MitRauswerfen;
 import basis.IRegeln;
 
 public class NormaleRegelnTest {

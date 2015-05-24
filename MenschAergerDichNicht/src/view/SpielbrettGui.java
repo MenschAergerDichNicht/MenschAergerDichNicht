@@ -7,7 +7,11 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -17,9 +21,10 @@ import javax.swing.JPanel;
 import regeln.MitRauswerfen;
 import logik.Spielbrett;
 import logik.Spieler;
+import logik.Spielfigur;
 
 
-public class SpielbrettGui extends JFrame {
+public class SpielbrettGui extends JFrame implements Observer{
 
 	/**
 	 * 
@@ -27,20 +32,21 @@ public class SpielbrettGui extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private final int[][] feldKoordinatenZuPosition = {
 			{00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-			{00, 00, 00, 00, 00, 10,  9,  8, 00, 00, 00, 00},
-			{00, 00, 00, 00, 00, 11,201,  7, 00, 00, 00, 00},
-			{00, 00, 00, 00, 00, 12,203,  6, 00, 00, 00, 00},
-			{00, 00, 00, 00, 00, 13,204,  5, 00, 00, 00, 00},
-			{00, 18, 17, 16, 15, 14,205,  4,  3,  2,  1,  0},
+			{00,205,206, 00, 00, 10,  9,  8, 00, 00,105,106},
+			{00,207,208, 00, 00, 11,201,  7, 00, 00,107,108},
+			{00, 00, 00, 00, 00, 12,202,  6, 00, 00, 00, 00},
+			{00, 00, 00, 00, 00, 13,203,  5, 00, 00, 00, 00},
+			{00, 18, 17, 16, 15, 14,204,  4,  3,  2,  1,  0},
 			{00, 19,301,302,303,304, 00,104,103,102,101, 39},
 			{00, 20, 21, 22, 23, 24,404, 34, 35, 36, 37, 38},
 			{00, 00, 00, 00, 00, 25,403, 33, 00, 00, 00, 00},
 			{00, 00, 00, 00, 00, 26,402, 32, 00, 00, 00, 00},
-			{00, 00, 00, 00, 00, 27,401, 31, 00, 00, 00, 00},
-			{00, 00, 00, 00, 00, 28, 29, 30, 00, 00, 00, 00}
+			{00,305,306, 00, 00, 27,401, 31, 00, 00,405,406},
+			{00,307,308, 00, 00, 28, 29, 30, 00, 00,407,408}
 			};
 	private SpielController controller;
 	private Spielbrett spielbrett;
+	private Map<Integer, Kreis> alleFelder = new HashMap<>();
 	
 	public static void main(String args[]) {
 		LinkedList<Spieler> spieler = new LinkedList<>();
@@ -61,12 +67,14 @@ public class SpielbrettGui extends JFrame {
 	public SpielbrettGui(Spielbrett brett) {
 		
 		spielbrett = brett;
+		spielbrett.addObserver(this);
 		controller = new SpielController(brett);
 		
 		Container pane = getContentPane();
 		pane.setLayout(new BorderLayout());
 		pane.add(getSpielfeld(), BorderLayout.CENTER);
 		pane.add(getAnzeige(), BorderLayout.EAST);
+		setzeAlleFigurenInsHeim();
 	}
 	
 	protected JComponent getSpielfeld() {
@@ -95,11 +103,35 @@ public class SpielbrettGui extends JFrame {
 		for(int i = 0; i < x.length-1; i++) {
 			for(int j = 0; j < x[i].length; j++) {
 				System.out.println(i + "," + j);
-				Kreis kreis = new Kreis(color, feldKoordinatenZuPosition[x[i][j]][x[i+1][j]]);
+				int feldnummer = feldKoordinatenZuPosition[x[i][j]][x[i+1][j]];
+				Kreis kreis = new Kreis(color, feldnummer);
+				alleFelder.put(feldnummer, kreis);
 				spielbrett.addObserver(kreis);
 				kreis.addMouseListener(controller);
 				jc.add(kreis, getPosition(x[i][j], x[i+1][j]));
 			}
+		}
+	}
+	
+	private void setzeFigurenInsHeim(int spieler) {
+		Spieler spielerobjekt = spielbrett.getSpieler().get(spieler - 1);
+
+		int basisfeldnummer = (spieler * 100) + 5;
+		for(Spielfigur figur:spielerobjekt.getSpielfiguren()) {
+			if(figur.getPosition() < 0 && figur.getHeimatfeld() < 1) {
+				alleFelder.get(basisfeldnummer).setBesetzer(figur);
+			}
+			else {
+				alleFelder.get(basisfeldnummer).setBesetzer(null);
+			}
+			basisfeldnummer++;
+		}
+		
+	}
+	
+	private void setzeAlleFigurenInsHeim() {
+		for(int i = 1; i <= 4; i++) {
+			setzeFigurenInsHeim(i);
 		}
 	}
 	
@@ -131,5 +163,13 @@ public class SpielbrettGui extends JFrame {
 		gbc.gridx = x;
 		gbc.gridy = y;
 		return gbc;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if(arg.getClass().equals(Spielfigur.class)) {
+			setzeAlleFigurenInsHeim();
+			repaint();
+		}
 	}
 }

@@ -40,23 +40,33 @@ class Kreis extends JComponent implements Observer{
 		  
 		  if(besetzer != null) {
 			  g.setColor(Color.BLACK);
-			  g.drawOval(getWidth() / 2, getHeight() / 2, getWidth() / 4, getHeight() / 4);
+			  g.drawOval(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
 			  g.setColor(besetzer.getFarbe());
-			  g.fillOval(getWidth() / 2, getHeight() / 2, getWidth() / 4, getHeight() / 4);
+			  g.fillOval(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
 		  }
 	    }
 
 	@Override
 	public void update(Observable o, Object arg) {
-		@SuppressWarnings("unchecked")
-		Map<Integer, Spielfigur> figurAusPosition = (Map<Integer, Spielfigur>) arg;
-		besetzer = figurAusPosition.get(feldnummer);
-		
-		if(besetzer != null) {
+		if(arg.getClass().equals(Map.class)) {
+			@SuppressWarnings("unchecked")
+			Map<Integer, Spielfigur> figurAusPosition = (Map<Integer, Spielfigur>) arg;
+			besetzer = figurAusPosition.get(feldnummer);
+			
+			if(besetzer != null) {
+				repaint();
+			}
+		}
+	}
+	
+	public void setBesetzer(Spielfigur figur) {
+		if(figur != besetzer) {
+			besetzer = figur;
 			repaint();
 		}
-		
-		
-		
-	} 
+	}
+	
+	public Spielfigur getBesetzer(Spielfigur figur) {
+		return besetzer;
+	}
 }

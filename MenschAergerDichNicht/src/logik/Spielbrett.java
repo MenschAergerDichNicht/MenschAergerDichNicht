@@ -47,7 +47,7 @@ public class Spielbrett extends Observable{
 		aktualisiereMap();
 		
 		setChanged();
-		notifyObservers(figur);
+		notifyObservers(figurAusPosition);
 		
 		wurdeGezogen = true;
 		
@@ -75,7 +75,7 @@ public class Spielbrett extends Observable{
 			figurAusPosition.put(startfeld, figur);
 			setChanged();
 		}
-		notifyObservers(figur);
+		notifyObservers(figurAusPosition);
 	}
 	
 	/**

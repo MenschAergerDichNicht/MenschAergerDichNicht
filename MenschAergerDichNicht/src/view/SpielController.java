@@ -4,11 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
+import javax.swing.JButton;
 
 import logik.Spielbrett;
 import logik.Spieler;
+import logik.Spielfigur;
 
-public class SpielController implements ActionListener, MouseListener {
+public class SpielController implements ActionListener, MouseListener, MouseMotionListener {
 	Spielbrett spielbrett;
 	Spieler letzterAgierenderSpieler;
 	Wuerfel wuerfel;
@@ -21,7 +25,16 @@ public class SpielController implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource().getClass().equals(Kreis.class)) {
 			Kreis kreis = (Kreis) e.getSource();
-			System.out.println(kreis.getFeldnummer());
+			Spielfigur figur = kreis.getBesetzer();
+			if(spielbrett.bewegenMoeglich(figur)) {
+				if(figur.imAnfangsfeld()) {
+					spielbrett.setzeFigurInsFeld(figur);
+				}
+				else {
+					
+				}
+				kreis.repaint();
+			}
 		}
 		else if(e.getSource().getClass().equals(Wuerfel.class)) {
 			if(letzterAgierenderSpieler == null 
@@ -32,6 +45,10 @@ public class SpielController implements ActionListener, MouseListener {
 					wuerfel.zeigeZahl(spielbrett.wuerfeln());
 				}
 			}
+		}
+		
+		else if(e.getSource().getClass().equals(JButton.class)) {
+			spielbrett.zugFertig();
 		}
 		
 
@@ -51,13 +68,21 @@ public class SpielController implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource().getClass().equals(Kreis.class)) {
+			Kreis kreis = (Kreis) e.getSource();
+			if(spielbrett.bewegenMoeglich(kreis.getBesetzer())) {
+				kreis.setKomplement();
+			}
+		}
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource().getClass().equals(Kreis.class)) {
+			Kreis kreis = (Kreis) e.getSource();
+			kreis.setNormaleFarbe();
+		}
 
 	}
 
@@ -65,6 +90,18 @@ public class SpielController implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,6 +19,7 @@ class Kreis extends JComponent implements Observer{
 	private Color color;
 	private int feldnummer;
 	private Spielfigur besetzer;
+	private boolean komplement = false;
 
 	
 	public Kreis(Color color, int feldnummer) {
@@ -41,14 +43,21 @@ class Kreis extends JComponent implements Observer{
 		  if(besetzer != null) {
 			  g.setColor(Color.BLACK);
 			  g.drawOval(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
-			  g.setColor(besetzer.getFarbe());
+			  Color figurfarbe = besetzer.getFarbe();
+			  if(komplement) {
+				  figurfarbe = new Color(
+						  255 - figurfarbe.getRed(), 
+						  255 - figurfarbe.getGreen(), 
+						  255 - figurfarbe.getBlue());
+			  }
+			  g.setColor(figurfarbe);
 			  g.fillOval(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
 		  }
 	    }
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(arg.getClass().equals(Map.class)) {
+		if(arg.getClass().equals(HashMap.class)) {
 			@SuppressWarnings("unchecked")
 			Map<Integer, Spielfigur> figurAusPosition = (Map<Integer, Spielfigur>) arg;
 			besetzer = figurAusPosition.get(feldnummer);
@@ -66,7 +75,19 @@ class Kreis extends JComponent implements Observer{
 		}
 	}
 	
-	public Spielfigur getBesetzer(Spielfigur figur) {
+	public Spielfigur getBesetzer() {
 		return besetzer;
+	}
+	
+	public void setKomplement() {
+		komplement = true;
+		repaint();
+	}
+	
+	public void setNormaleFarbe() {
+		if(komplement) {
+			komplement = false;
+			repaint();
+		}
 	}
 }

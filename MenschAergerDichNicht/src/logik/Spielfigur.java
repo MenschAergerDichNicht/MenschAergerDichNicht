@@ -83,5 +83,12 @@ public class Spielfigur {
 	public int getPosition() {
 		return position;
 	}
+	
+	public boolean imAnfangsfeld() {
+		if(position < 0 && heimatfeld < 1) {
+			return true;
+		}
+		return false;
+	}
 
 }

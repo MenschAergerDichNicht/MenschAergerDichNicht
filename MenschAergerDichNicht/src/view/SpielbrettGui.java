@@ -14,6 +14,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -102,12 +103,12 @@ public class SpielbrettGui extends JFrame implements Observer{
 	protected void zeichnen(byte[][] x, JComponent jc, Color color) {
 		for(int i = 0; i < x.length-1; i++) {
 			for(int j = 0; j < x[i].length; j++) {
-				System.out.println(i + "," + j);
 				int feldnummer = feldKoordinatenZuPosition[x[i][j]][x[i+1][j]];
 				Kreis kreis = new Kreis(color, feldnummer);
 				alleFelder.put(feldnummer, kreis);
 				spielbrett.addObserver(kreis);
 				kreis.addMouseListener(controller);
+				kreis.addMouseMotionListener(controller);
 				jc.add(kreis, getPosition(x[i][j], x[i+1][j]));
 			}
 		}
@@ -139,8 +140,19 @@ public class SpielbrettGui extends JFrame implements Observer{
 		JPanel anzeige = new JPanel();
 		anzeige.setLayout(new BorderLayout());
 		anzeige.setPreferredSize(new Dimension(200, 800));
-//		anzeige.add(getSpieler(), BorderLayout.NORTH);
+		anzeige.add(getSpieler(), BorderLayout.CENTER);
 		anzeige.add(getWuerfel(), BorderLayout.SOUTH);
+		
+		JButton button = new JButton("Zug Beenden");
+		button.addMouseListener(controller);
+		anzeige.add(button, BorderLayout.NORTH);
+		return anzeige;
+	}
+	
+	protected JComponent getSpieler() {
+		Spieleranzeige anzeige = new Spieleranzeige(spielbrett);
+		spielbrett.addObserver(anzeige);
+		anzeige.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		return anzeige;
 	}
 	

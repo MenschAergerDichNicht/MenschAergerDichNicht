@@ -67,12 +67,16 @@ public class Spielbrett extends Observable{
 		if(figurAusPosition.get(startfeld) == null) {
 			figur.setPosition(startfeld);
 			figurAusPosition.put(startfeld, figur);
+			wurdeGezogen = true;
+			anzahlWuerfe = 0;
 			setChanged();
 		}
 		else if(figurAusPosition.get(startfeld).getSpieler() != figur.getSpieler()) {
 			figurAusPosition.get(startfeld).setPosition(-1);
 			figur.setPosition(startfeld);
 			figurAusPosition.put(startfeld, figur);
+			wurdeGezogen = true;
+			anzahlWuerfe = 0;
 			setChanged();
 		}
 		notifyObservers(figurAusPosition);
@@ -83,7 +87,10 @@ public class Spielbrett extends Observable{
 	 * @return true, wenn sie mit der vorliegenden Augenzahl bewegt werden kann.
 	 */
 	public boolean bewegenMoeglich(Spielfigur figur) {
-		return regeln.bewegenMoeglich(figurAusPosition, figur, letzteAugenzahl);
+		if(figur != null && figur.getSpieler() == amZug && !wurdeGezogen) {
+			return regeln.bewegenMoeglich(figurAusPosition, figur, letzteAugenzahl);
+		}
+		return false;
 	}
 	
 	/**

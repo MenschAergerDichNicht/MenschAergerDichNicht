@@ -56,6 +56,10 @@ public class Spielbrett extends Observable{
 		}
 	}
 	
+	public void bewegeFigur(Spielfigur figur) {
+		bewegeFigur(figur, letzteAugenzahl);
+	}
+	
 	/**
 	 * Setzt eine Figur auf das Startfeld ihres Spielers. Wenn dort bereits
 	 * eine Figur des eigenen Spielers steht, passiert nichts.

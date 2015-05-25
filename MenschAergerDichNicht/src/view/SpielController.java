@@ -31,19 +31,21 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 					spielbrett.setzeFigurInsFeld(figur);
 				}
 				else {
-					
+					spielbrett.bewegeFigur(figur);
 				}
 				kreis.repaint();
+				letzterAgierenderSpieler = spielbrett.getAmZug();
 			}
 		}
 		else if(e.getSource().getClass().equals(Wuerfel.class)) {
 			if(letzterAgierenderSpieler == null 
 					|| letzterAgierenderSpieler != spielbrett.getAmZug()
-					|| spielbrett.getNochmalWuerfeln()) {
+					&& spielbrett.getNochmalWuerfeln()) {
 				wuerfel = (Wuerfel) e.getSource();
-				if(spielbrett.getNochmalWuerfeln()) {
+				if(!wuerfel.isRunning()) {
 					wuerfel.zeigeZahl(spielbrett.wuerfeln());
 				}
+				
 			}
 		}
 		

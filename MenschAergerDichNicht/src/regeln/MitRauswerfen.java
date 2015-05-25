@@ -46,6 +46,9 @@ public class MitRauswerfen implements IRegeln{
 			else if(letzteAugenzahl == 6){
 				return true;
 			}
+			else if(wieOftSchonGewuerfelt == 0) {
+				return true;
+			}
 		return false;
 	}
 

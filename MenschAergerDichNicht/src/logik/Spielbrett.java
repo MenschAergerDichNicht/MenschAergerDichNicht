@@ -50,10 +50,6 @@ public class Spielbrett extends Observable{
 		notifyObservers(figurAusPosition);
 		
 		wurdeGezogen = true;
-		
-		if(!regeln.nochMalWuerfeln(amZug, anzahlWuerfe, felderVor)) {
-			zugFertig();
-		}
 	}
 	
 	public void bewegeFigur(Spielfigur figur) {
@@ -184,6 +180,10 @@ public class Spielbrett extends Observable{
 	}
 	
 	public boolean getNochmalWuerfeln() {
+		System.out.println("[getNochmalWuerfeln]");
+		System.out.println("Regelobjekt: " + regeln.nochMalWuerfeln(amZug, anzahlWuerfe, letzteAugenzahl));
+		System.out.println("Wurde schon gezogen? " + wurdeGezogen);
+		System.out.println("keine Figur draussen? " + keineFigurDraussen(amZug));
 		return regeln.nochMalWuerfeln(amZug, anzahlWuerfe, letzteAugenzahl) 
 				&& (wurdeGezogen || keineFigurDraussen(amZug));
 	}

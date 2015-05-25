@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import logik.Spielbrett;
 import logik.Spieler;
@@ -38,15 +39,18 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 			}
 		}
 		else if(e.getSource().getClass().equals(Wuerfel.class)) {
-			if(letzterAgierenderSpieler == null 
-					|| letzterAgierenderSpieler != spielbrett.getAmZug()
-					&& spielbrett.getNochmalWuerfeln()) {
+			if(spielbrett.getNochmalWuerfeln()) {
 				wuerfel = (Wuerfel) e.getSource();
 				if(!wuerfel.isRunning()) {
 					wuerfel.zeigeZahl(spielbrett.wuerfeln());
 				}
+				else {
+					JOptionPane.showMessageDialog(null, 
+							"Bitte das Wurfergebnis abwarten.");
+				}
 				
 			}
+			System.out.println(spielbrett.getNochmalWuerfeln());
 		}
 		
 		else if(e.getSource().getClass().equals(JButton.class)) {

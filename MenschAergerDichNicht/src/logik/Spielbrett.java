@@ -87,6 +87,7 @@ public class Spielbrett extends Observable{
 	 * @return true, wenn sie mit der vorliegenden Augenzahl bewegt werden kann.
 	 */
 	public boolean bewegenMoeglich(Spielfigur figur) {
+		
 		if(figur != null && figur.getSpieler() == amZug && !wurdeGezogen) {
 			return regeln.bewegenMoeglich(figurAusPosition, figur, letzteAugenzahl);
 		}
@@ -180,10 +181,6 @@ public class Spielbrett extends Observable{
 	}
 	
 	public boolean getNochmalWuerfeln() {
-		System.out.println("[getNochmalWuerfeln]");
-		System.out.println("Regelobjekt: " + regeln.nochMalWuerfeln(amZug, anzahlWuerfe, letzteAugenzahl));
-		System.out.println("Wurde schon gezogen? " + wurdeGezogen);
-		System.out.println("keine Figur draussen? " + keineFigurDraussen(amZug));
 		return regeln.nochMalWuerfeln(amZug, anzahlWuerfe, letzteAugenzahl) 
 				&& (wurdeGezogen || keineFigurDraussen(amZug));
 	}

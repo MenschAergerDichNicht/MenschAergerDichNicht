@@ -9,6 +9,8 @@ import java.util.Observer;
 
 import javax.swing.JComponent;
 
+import logik.Spielbrett;
+import logik.Spieler;
 import logik.Spielfigur;
 
 class Kreis extends JComponent implements Observer{
@@ -19,7 +21,9 @@ class Kreis extends JComponent implements Observer{
 	private Color color;
 	private int feldnummer;
 	private Spielfigur besetzer;
+	private Spielfigur ersterBesetzer;
 	private boolean komplement = false;
+	private boolean heimatfeld = false;
 
 	
 	public Kreis(Color color, int feldnummer) {
@@ -58,17 +62,55 @@ class Kreis extends JComponent implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg.getClass().equals(HashMap.class)) {
-			@SuppressWarnings("unchecked")
-			Map<Integer, Spielfigur> figurAusPosition = (Map<Integer, Spielfigur>) arg;
-			besetzer = figurAusPosition.get(feldnummer);
+			if(!heimatfeld) {
+				@SuppressWarnings("unchecked")
+				Map<Integer, Spielfigur> figurAusPosition = (Map<Integer, Spielfigur>) arg;
+				Spielfigur neuerBesetzer = figurAusPosition.get(feldnummer);
+				
+				if(neuerBesetzer != besetzer) {
+					besetzer = neuerBesetzer;
+					repaint();
+				}
+			}
+			else {
+				if(besetzer == null 
+						&& ersterBesetzer != null 
+						&& ersterBesetzer.imAnfangsfeld()) {
+					besetzer = ersterBesetzer;
+					repaint();
+				}
+			}
 			
-			if(besetzer != null) {
-				repaint();
+			if(!heimatfeld && feldnummer >= 100 && besetzer == null) {
+				boolean gefunden = false;
+				Spielbrett brett = (Spielbrett) o;
+				for(Spieler spieler:brett.getSpieler()) {
+					for(Spielfigur figur: spieler.getSpielfiguren()) {
+						if(figur.getHeimatfeld() >= 1) {
+							int ermittelteFeldnummer = 
+									(spieler.getNummer() * 100) 
+									+ 5 + figur.getHeimatfeld();
+							
+							if(feldnummer == ermittelteFeldnummer) {
+								besetzer = figur;
+								repaint();
+								gefunden = true;
+								break;
+							}
+						}
+					}
+					if(gefunden) {
+						break;
+					}
+				}
 			}
 		}
 	}
 	
 	public void setBesetzer(Spielfigur figur) {
+		if(ersterBesetzer == null) {
+			ersterBesetzer = figur;
+		}
 		if(figur != besetzer) {
 			besetzer = figur;
 			repaint();
@@ -89,5 +131,9 @@ class Kreis extends JComponent implements Observer{
 			komplement = false;
 			repaint();
 		}
+	}
+	
+	public void setHeimatfeld() {
+		heimatfeld = true;
 	}
 }

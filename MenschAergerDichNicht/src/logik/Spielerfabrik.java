@@ -11,6 +11,7 @@ public class Spielerfabrik {
 
 	private int spieleranzahl;
 	private int startfeld = 0;
+	private int spielernummer;
 
 	/**
 	 * @param spieleranzahl die Anzahl möglicher Spieler auf dem Brett. 4 oder 6. 
@@ -33,6 +34,8 @@ public class Spielerfabrik {
 		else {
 			startfeld += 10;
 		}
+		spielernummer++;
+		spieler.setNummer(spielernummer);
 		return spieler; 	
 	}
 	

@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -30,6 +31,7 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 			if(spielbrett.bewegenMoeglich(figur)) {
 				if(figur.imAnfangsfeld()) {
 					spielbrett.setzeFigurInsFeld(figur);
+					kreis.setBesetzer(null);
 				}
 				else {
 					spielbrett.bewegeFigur(figur);
@@ -50,14 +52,26 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 				}
 				
 			}
-			System.out.println(spielbrett.getNochmalWuerfeln());
 		}
 		
 		else if(e.getSource().getClass().equals(JButton.class)) {
-			spielbrett.zugFertig();
+			zugFertig();
 		}
 		
 
+	}
+	
+	private void zugFertig() {
+		spielbrett.zugFertig();
+
+//		while(spielbrett.getAmZug().isComputer()) {
+//			try {
+//				computerZug();
+//			} catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		}
 	}
 
 	@Override
@@ -109,5 +123,25 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void computerZug() throws InterruptedException {
 
+		while (spielbrett.getNochmalWuerfeln() || !spielbrett.getOptionen().isEmpty()) {
+			wuerfel.zeichneZahl(spielbrett.wuerfeln());
+
+			List<Spielfigur> optionen = spielbrett.getOptionen();
+			if(!optionen.isEmpty()) {
+				Spielfigur figur = optionen.get(0);
+				if(figur.imAnfangsfeld()) {
+					spielbrett.setzeFigurInsFeld(figur);
+				}
+				else {
+					spielbrett.bewegeFigur(figur);
+				}
+			}
+		}
+		spielbrett.zugFertig();	
+		
+	}
+	
 }

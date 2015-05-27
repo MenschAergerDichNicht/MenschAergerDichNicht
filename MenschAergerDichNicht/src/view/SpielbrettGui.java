@@ -56,6 +56,11 @@ public class SpielbrettGui extends JFrame implements Observer{
 		spieler.add(new Spieler(Color.BLUE, 20, "Laura"));
 		spieler.add(new Spieler(Color.YELLOW, 30, "Alex"));
 		
+		for(Spieler spiel:spieler) {
+			if(!spiel.getName().equals("Ole"))
+			spiel.setComputer();
+		}
+		
 		Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen());
 		
 		SpielbrettGui sbg = new SpielbrettGui(brett);
@@ -95,8 +100,10 @@ public class SpielbrettGui extends JFrame implements Observer{
 		zeichnen(weiss, spielfeld, Color.WHITE);
 		zeichnen(spieler1, spielfeld, spielbrett.getSpieler().get(0).getFarbe());
 		zeichnen(spieler2, spielfeld, spielbrett.getSpieler().get(1).getFarbe());
-		zeichnen(spieler3, spielfeld, spielbrett.getSpieler().get(2).getFarbe());
-		zeichnen(spieler4, spielfeld, spielbrett.getSpieler().get(3).getFarbe());
+		if(spielbrett.getSpieler().size() > 2)
+			zeichnen(spieler3, spielfeld, spielbrett.getSpieler().get(2).getFarbe());
+		if(spielbrett.getSpieler().size() > 3)
+			zeichnen(spieler4, spielfeld, spielbrett.getSpieler().get(3).getFarbe());
 		
 		return spielfeld;
 	}
@@ -119,6 +126,7 @@ public class SpielbrettGui extends JFrame implements Observer{
 
 		int basisfeldnummer = (spieler * 100) + 5;
 		for(Spielfigur figur:spielerobjekt.getSpielfiguren()) {
+				alleFelder.get(basisfeldnummer).setHeimatfeld();
 			if(figur.getPosition() < 0 && figur.getHeimatfeld() < 1) {
 				alleFelder.get(basisfeldnummer).setBesetzer(figur);
 			}
@@ -131,7 +139,7 @@ public class SpielbrettGui extends JFrame implements Observer{
 	}
 	
 	private void setzeAlleFigurenInsHeim() {
-		for(int i = 1; i <= 4; i++) {
+		for(int i = 1; i <= spielbrett.getSpieler().size(); i++) {
 			setzeFigurenInsHeim(i);
 		}
 	}

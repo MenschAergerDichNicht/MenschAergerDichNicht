@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
@@ -15,7 +14,7 @@ public class Wuerfel extends JComponent {
 	private static final long serialVersionUID = 1L;
 	private static final int TIMER_START_DELAY = 1;
 	private static final int TIMER_END_DELAY = 150;
-	private boolean runs;
+	private volatile boolean runs;
 	
 	// zahl ist zwischen 1-6 und gibt an wie der Würfel gezeichnet wird
 	int zahl = (int) (Math.random()*6)+1;
@@ -44,6 +43,7 @@ public class Wuerfel extends JComponent {
 			}
 		});
 		// bei Mausklick aktiviert
+//		Macht der Controller :)
 //		this.addMouseListener(new MouseListener() {
 //			@Override public void mouseReleased(MouseEvent e) {}
 //			@Override public void mousePressed(MouseEvent e) {}
@@ -128,6 +128,11 @@ public class Wuerfel extends JComponent {
 		timer.setDelay(TIMER_START_DELAY);
 		runs = true;
 		timer.start();
+	}
+	
+	public void zeichneZahl(int zahl) {
+		this.zahl = zahl;
+		repaint();
 	}
 	
 	public boolean isRunning() {

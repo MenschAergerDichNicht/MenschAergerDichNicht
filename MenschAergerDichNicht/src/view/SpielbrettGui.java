@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import regeln.MitRauswerfen;
 import logik.Spielbrett;
 import logik.Spieler;
+import logik.Spielerfabrik;
 import logik.Spielfigur;
 
 
@@ -51,10 +52,12 @@ public class SpielbrettGui extends JFrame implements Observer{
 	
 	public static void main(String args[]) {
 		LinkedList<Spieler> spieler = new LinkedList<>();
-		spieler.add(new Spieler(Color.RED, 0, "Ole"));
-		spieler.add(new Spieler(Color.GREEN, 10, "Franzi"));
-		spieler.add(new Spieler(Color.BLUE, 20, "Laura"));
-		spieler.add(new Spieler(Color.YELLOW, 30, "Alex"));
+		Spielerfabrik fabrik = new Spielerfabrik(4);
+		
+		spieler.add(fabrik.getSpieler(Color.RED, "Ole"));
+		spieler.add(fabrik.getSpieler(Color.GREEN, "Franzi"));
+		spieler.add(fabrik.getSpieler(Color.BLUE, "Laura"));
+		spieler.add(fabrik.getSpieler(Color.YELLOW, "Alex"));
 		
 		for(Spieler spiel:spieler) {
 			if(!spiel.getName().equals("Ole"))
@@ -100,10 +103,8 @@ public class SpielbrettGui extends JFrame implements Observer{
 		zeichnen(weiss, spielfeld, Color.WHITE);
 		zeichnen(spieler1, spielfeld, spielbrett.getSpieler().get(0).getFarbe());
 		zeichnen(spieler2, spielfeld, spielbrett.getSpieler().get(1).getFarbe());
-		if(spielbrett.getSpieler().size() > 2)
-			zeichnen(spieler3, spielfeld, spielbrett.getSpieler().get(2).getFarbe());
-		if(spielbrett.getSpieler().size() > 3)
-			zeichnen(spieler4, spielfeld, spielbrett.getSpieler().get(3).getFarbe());
+		zeichnen(spieler3, spielfeld, spielbrett.getSpieler().get(2).getFarbe());
+		zeichnen(spieler4, spielfeld, spielbrett.getSpieler().get(3).getFarbe());
 		
 		return spielfeld;
 	}

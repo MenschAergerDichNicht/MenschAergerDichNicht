@@ -14,6 +14,8 @@ import basis.IRegeln;
  * @author lea
  */
 public class MitRauswerfen implements IRegeln{
+	
+	private final int SPIELFELDGROESSE = 39;
 
 	/**Reprï¿œsentiert den Wï¿œrfel
 	 * @return die Augenanzahl des Wï¿œrfels
@@ -61,7 +63,7 @@ public class MitRauswerfen implements IRegeln{
 	@Override
 	public void bewegeFigur(Map<Integer, Spielfigur> figurAusPosition,
 			Spielfigur figur, int felderVor) {
-		// TODO Auto-generated method stub
+		/*
 		int momPos = figur.getPosition();
 		int neuePos = momPos+felderVor;
 		
@@ -84,6 +86,44 @@ public class MitRauswerfen implements IRegeln{
 			}
 			figur.setHeimatfeld(felderZuLaufen);
 		}
+		*/
+		
+		int felderBisherGelaufen = getFelderBewegt(figur.getStartfeld(), 
+				figur.getPosition());
+		int felderJetztGelaufen = felderBisherGelaufen + felderVor;
+		int neuePosition = figur.getPosition() + felderVor;
+		if(neuePosition > SPIELFELDGROESSE) {
+			neuePosition = neuePosition - SPIELFELDGROESSE - 1;
+		}
+		
+		//Ob der Platz ausreicht, sollte bewegenMoeglich abdecken.
+		if (felderJetztGelaufen > SPIELFELDGROESSE) {
+			figur.setPosition(-1);
+			figur.setHeimatfeld(felderJetztGelaufen - SPIELFELDGROESSE);
+		}
+		else {
+			Spielfigur figurAufZielposition = 
+					figurAusPosition.get(neuePosition);
+			/*
+			 * Schlagen.
+			 * Ob die andere Figur die eines Gegners ist,
+			 * sollte bewegenMoeglich abdecken 
+			 */
+			
+			if(figurAufZielposition != null) {
+				figurAufZielposition.setPosition(-1);
+			}
+			
+			figur.setPosition(neuePosition);
+		}
+		
+	}
+	
+	private int getFelderBewegt(int start, int position) {
+		if(position <= SPIELFELDGROESSE && position >= start) {
+			return position - start;
+		}
+		return SPIELFELDGROESSE - start + position;
 	}
 
 	/**

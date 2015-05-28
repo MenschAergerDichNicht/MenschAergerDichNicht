@@ -35,6 +35,12 @@ public class Spieler {
 		spielfiguren = Collections.unmodifiableList(spielfiguren);
 	}
 	
+	protected Spieler(Color farbe) {
+		this.farbe = farbe;
+		spielfiguren = new ArrayList<>();
+		spielfiguren = Collections.unmodifiableList(spielfiguren);
+	}
+	
 	/**
 	 * @return die Farbe des Spielers und seiner Figuren.
 	 */

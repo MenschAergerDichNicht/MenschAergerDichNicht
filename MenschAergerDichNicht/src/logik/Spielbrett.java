@@ -146,8 +146,14 @@ public class Spielbrett extends Observable{
 			amZug = werIstDran.next();
 		}
 		wurdeGezogen = true;
-		setChanged();
-		notifyObservers(amZug);
+		if(amZug.getName() != null) {
+			setChanged();
+			notifyObservers(amZug);
+		}
+		else{
+			zugFertig();
+		}
+		
 	}
 
 	/**

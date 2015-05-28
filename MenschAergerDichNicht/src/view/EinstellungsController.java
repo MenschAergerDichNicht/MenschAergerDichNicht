@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import regeln.MitRauswerfen;
@@ -85,7 +86,13 @@ public class EinstellungsController implements ActionListener, MouseListener {
 			//TODO Regeln mit Einstellungen verbinden
 			final Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen());
 			
+			if(brett.getSpieler().size() < 4) {
+				
+			}
+			
 			SpielbrettGui frame = new SpielbrettGui(brett);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(800, 615);
 			frame.setVisible(true);
 			
 			einstellungsframe.dispose();

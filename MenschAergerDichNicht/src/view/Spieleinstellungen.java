@@ -80,6 +80,9 @@ public class Spieleinstellungen {
 			else if(!name.equals("Spieler " + spieler)) {
 					liste.add(fabrik.getSpieler(farbe, name));
 			}
+			else if(name.equals("Spieler " + spieler)) {
+				liste.add(Spielerfabrik.getLeerenSpieler(farbe));
+		}
 		}
 		
 		return liste;

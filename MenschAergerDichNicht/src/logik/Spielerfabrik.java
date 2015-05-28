@@ -39,4 +39,8 @@ public class Spielerfabrik {
 		return spieler; 	
 	}
 	
+	public static Spieler getLeerenSpieler(Color farbe) {
+		return new Spieler(farbe);
+	}
+	
 }

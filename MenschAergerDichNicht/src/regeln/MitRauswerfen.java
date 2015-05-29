@@ -161,7 +161,7 @@ public class MitRauswerfen implements IRegeln{
 		
 		//Schlagzwang
 		for(int i=0; i<4; i++){
-			if(figur.getSpieler().getSpielfiguren().get(i).getPosition() > 0 &&
+			if(augenzahl != 6 && figur.getSpieler().getSpielfiguren().get(i).getPosition() > 0 &&
 					(figurAusPosition.get(neuePosFeld) == null && (
 					figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) != null 
 					&& figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl).getSpieler() != figur.getSpieler()))) {
@@ -171,7 +171,7 @@ public class MitRauswerfen implements IRegeln{
 		
 		//Bei 6 nicht aus Haus, wenn jemand auf Startfeld steht
 		if(augenzahl==6 && figur.getPosition()<0 && figur.getHeimatfeld()==0 
-				&& figurAusPosition.get(figur.getStartfeld())!=null){
+				&& (figurAusPosition.get(figur.getStartfeld())!=null && figur.getSpieler() == figurAusPosition.get(figur.getStartfeld()).getSpieler())){
 			return false;
 		}
 		
@@ -179,14 +179,14 @@ public class MitRauswerfen implements IRegeln{
 		if(augenzahl==6 && figur.getPosition() > 0){
 			for(int i=0;i<4;i++){
 				if (figur.getSpieler().getSpielfiguren().get(i).getPosition()<0 && figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld() == 0
-						&& figurAusPosition.get(figur.getStartfeld())==null){
+						&& (figurAusPosition.get(figur.getStartfeld())==null || figurAusPosition.get(figur.getStartfeld()).getSpieler() != figur.getSpieler())){
 					return false;
 				}
 			}
 		}
 		
 		//Wenn eigene Figur da steht (im Feld)   
-		if ((figurAusPosition.get(neuePosFeld) != null  &&
+		if (figur.getPosition()>=0 &&(figurAusPosition.get(neuePosFeld) != null  &&
 				figurAusPosition.get(neuePosFeld).getSpieler() == figur.getSpieler())
 				&& figur.getHeimatfeld() ==	0){
 			return false;

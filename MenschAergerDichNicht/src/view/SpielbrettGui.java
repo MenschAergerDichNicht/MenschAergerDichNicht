@@ -152,7 +152,7 @@ public class SpielbrettGui extends JFrame implements Observer{
 		anzeige.add(getSpieler(), BorderLayout.CENTER);
 		anzeige.add(getWuerfel(), BorderLayout.SOUTH);
 		
-		JButton button = new JButton("Zug Beenden");
+		JButton button = new JButton("Zug beenden");
 		button.addMouseListener(controller);
 		anzeige.add(button, BorderLayout.NORTH);
 		return anzeige;

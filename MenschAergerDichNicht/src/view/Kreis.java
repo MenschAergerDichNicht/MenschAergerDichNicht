@@ -46,8 +46,30 @@ class Kreis extends JComponent implements Observer{
 		  
 		  if(besetzer != null) {
 			  g.setColor(Color.BLACK);
-			  g.drawOval(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+			  
+			  int viertelbreit = getWidth() / 4;
+			  int viertelhoch = getHeight() / 4;
+			  int halbbreit = getWidth() / 2;
+			  int halbhoch = getHeight() / 2;
+			  
+			  randbreite = (int) (halbhoch * 0.10);
 			  Color figurfarbe = besetzer.getFarbe();
+			  
+			  Color komplementaerFarbe = new Color(
+					  255 - figurfarbe.getRed(), 
+					  255 - figurfarbe.getGreen(), 
+					  255 - figurfarbe.getBlue());
+			  
+			  g.setColor(komplementaerFarbe);
+			  
+			  g.fillOval(viertelbreit + randbreite,
+					  viertelhoch + randbreite,
+					  halbbreit, halbhoch);
+			  
+			  g.drawOval(viertelbreit,
+					  viertelhoch,
+					  halbbreit, halbhoch);
+			  
 			  if(komplement) {
 				  figurfarbe = new Color(
 						  255 - figurfarbe.getRed(), 
@@ -55,7 +77,7 @@ class Kreis extends JComponent implements Observer{
 						  255 - figurfarbe.getBlue());
 			  }
 			  g.setColor(figurfarbe);
-			  g.fillOval(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+			  g.fillOval(viertelbreit, viertelhoch, halbbreit, halbhoch);
 		  }
 	    }
 

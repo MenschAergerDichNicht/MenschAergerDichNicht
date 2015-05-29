@@ -1,9 +1,15 @@
 package view;
 
+import java.awt.Color;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComboBox;
+
+import logik.Spieler;
+import logik.Spielerfabrik;
 
 public class Spieleinstellungen {
 	
@@ -58,5 +64,27 @@ public class Spieleinstellungen {
 	
 	public SpielerEinstellungen getSpielereinstellungen(int spielernummer) {
 		return spielereinstellungen.get(spielernummer);
+	}
+	
+	public List<Spieler> getSpieler() {
+		List<Spieler> liste = new LinkedList<>();
+		Spielerfabrik fabrik = new Spielerfabrik(getSpielfeldGroesse());
+		
+		for(int spieler = 1; spieler <= getSpielfeldGroesse(); spieler++) {
+			Color farbe = spielereinstellungen.get(spieler).getFarbe();
+			String name = spielereinstellungen.get(spieler).getName();
+
+			if(spieler < 3) {
+				liste.add(fabrik.getSpieler(farbe, name));
+			}
+			else if(!name.equals("Spieler " + spieler)) {
+					liste.add(fabrik.getSpieler(farbe, name));
+			}
+			else if(name.equals("Spieler " + spieler)) {
+				liste.add(Spielerfabrik.getLeerenSpieler(farbe));
+		}
+		}
+		
+		return liste;
 	}
 }

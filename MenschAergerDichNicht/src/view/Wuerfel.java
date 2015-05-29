@@ -4,25 +4,27 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 import javax.swing.Timer;
 
-public class Wuerfel extends JPanel {
+public class Wuerfel extends JComponent {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final int TIMER_START_DELAY = 1;
 	private static final int TIMER_END_DELAY = 150;
+	private volatile boolean runs;
 	
 	// zahl ist zwischen 1-6 und gibt an wie der Würfel gezeichnet wird
 	int zahl = (int) (Math.random()*6)+1;
+	int ergebnis;
+	Wuerfel wuerfel = this;
+	private final Timer timer;
+	
 	public Wuerfel() {
 		// Der Timer der den Würfel zählen lässt
-		final Timer timer = new Timer(TIMER_START_DELAY, new ActionListener() {
+		timer = new Timer(TIMER_START_DELAY, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -33,23 +35,27 @@ public class Wuerfel extends JPanel {
 					// Sorgt für die Verlangsamung des zählers
 					timer.setDelay(timer.getDelay() + 3);
 				} else {
+					zahl = ergebnis;
+					wuerfel.repaint();
+					runs = false;
 					timer.stop();
 				}
 			}
 		});
 		// bei Mausklick aktiviert
-		this.addMouseListener(new MouseListener() {
-			@Override public void mouseReleased(MouseEvent e) {}
-			@Override public void mousePressed(MouseEvent e) {}
-			@Override public void mouseExited(MouseEvent e) {}
-			@Override public void mouseEntered(MouseEvent e) {}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				timer.setDelay(TIMER_START_DELAY);
-				timer.start();
-			}
-		});
+//		Macht der Controller :)
+//		this.addMouseListener(new MouseListener() {
+//			@Override public void mouseReleased(MouseEvent e) {}
+//			@Override public void mousePressed(MouseEvent e) {}
+//			@Override public void mouseExited(MouseEvent e) {}
+//			@Override public void mouseEntered(MouseEvent e) {}
+//			
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				timer.setDelay(TIMER_START_DELAY);
+//				timer.start();
+//			}
+//		});
 	}
 	
 	@Override
@@ -115,5 +121,21 @@ public class Wuerfel extends JPanel {
 			zahl++;
 		
 		this.repaint();
+	}
+	
+	public void zeigeZahl(int ergebnis) {
+		this.ergebnis = ergebnis;
+		timer.setDelay(TIMER_START_DELAY);
+		runs = true;
+		timer.start();
+	}
+	
+	public void zeichneZahl(int zahl) {
+		this.zahl = zahl;
+		repaint();
+	}
+	
+	public boolean isRunning() {
+		return runs;
 	}
 }

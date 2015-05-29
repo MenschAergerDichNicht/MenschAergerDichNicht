@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -15,7 +16,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+import regeln.MitRauswerfen;
+import logik.Spielbrett;
+import logik.Spieler;
 
 public class EinstellungsController implements ActionListener, MouseListener {
 
@@ -74,7 +80,22 @@ public class EinstellungsController implements ActionListener, MouseListener {
 			break;
 		
 		case "start":
-			Einstellungen einstellungsframe = (Einstellungen) (((JComponent) e.getSource()).getTopLevelAncestor());
+			final Einstellungen einstellungsframe = (Einstellungen) (((JComponent) e.getSource()).getTopLevelAncestor());
+			List<Spieler> spieler = einstellungsframe.spieleinstellungen.getSpieler();
+			
+			//TODO Regeln mit Einstellungen verbinden
+			final Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen());
+			
+			if(brett.getSpieler().size() < 4) {
+				
+			}
+			
+			SpielbrettGui frame = new SpielbrettGui(brett);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(800, 615);
+			frame.setVisible(true);
+			
+			einstellungsframe.dispose();
 
 			break;
 			

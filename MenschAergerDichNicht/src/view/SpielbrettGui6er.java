@@ -43,12 +43,12 @@ public class SpielbrettGui6er extends JFrame {
 		
 		//Array der Spielfelder, noch mit spieler verbinden
 		byte[][] weiss = {{6,7,6,8,6,8,3,4,5,6,8,9,10,11,12,2,12,2,3,4,10,11,4,10,4,10,3,4,10,11,12,2,12,2,3,4,5,6,8,9,10,11,6,8,6,8,7,8},{0,0,1,1,2,2,3,3,3,3,3,3,3,3,3,4,4,5,5,5,5,5,6,6,7,7,8,8,8,8,8,9,9,10,10,10,10,10,10,10,10,10,11,11,12,12,13,13}};
-		byte[][] spieler1 = {{2,3,2,3,2,3,4,5,6},{0,0,1,1,3,4,4,4,4}};
-		byte[][] spieler2 = {{11,12,11,12,8,7,7,7,7},{0,0,1,1,0,1,2,3,4}};
-		byte[][] spieler3 = {{13,13,14,14,12,8,9,10,11},{6,7,6,7,5,4,4,4,4}};
-		byte[][] spieler4 = {{11,11,12,12,12,8,9,10,11},{12,13,12,13,10,9,9,9,9}};
-		byte[][] spieler5 = {{2,3,2,3,6,7,7,7,7},{12,12,13,13,13,9,10,11,12}};
-		byte[][] spieler6 = {{0,0,1,1,2,3,4,5,6},{6,7,6,7,8,9,9,9,9}};
+		byte[][] spieler1 = {{2,3,2,3,2},{0,0,1,1,3}};
+		byte[][] spieler2 = {{11,12,11,12,8},{0,0,1,1,0}};
+		byte[][] spieler3 = {{13,13,14,14,12},{6,7,6,7,5}};
+		byte[][] spieler4 = {{11,11,12,12,12},{12,13,12,13,10}};
+		byte[][] spieler5 = {{2,3,2,3,6},{12,12,13,13,13}};
+		byte[][] spieler6 = {{0,0,1,1,2},{6,7,6,7,8}};
 		
 		zeichnen(weiss, spielfeld, Color.WHITE);
 		zeichnen(spieler1, spielfeld, Color.RED);
@@ -63,7 +63,7 @@ public class SpielbrettGui6er extends JFrame {
 	protected void zeichnen(byte[][] x, JComponent jc, Color color) {
 		for(int i = 0; i < x.length-1; i++) {
 			for(int j = 0; j < x[i].length; j++) {
-				jc.add(new Kreis(color), getPosition(x[i][j], x[i+1][j]));
+				jc.add(new Kreis(color, j), getPosition(x[i][j], x[i+1][j]));
 			}
 		}
 	}

@@ -16,6 +16,8 @@ public class Spieler {
 	private int startfeld;
 	private String name;
 	private final int anzahlSpielfiguren = 4;
+	private boolean computerspieler = false;
+	private int nummer;
 	
 	/**
 	 * @param farbe die vom Spieler gewählte Farbe
@@ -30,6 +32,12 @@ public class Spieler {
 		for(int i = 0; i < anzahlSpielfiguren; i++) {
 			spielfiguren.add(new Spielfigur(this));
 		}
+		spielfiguren = Collections.unmodifiableList(spielfiguren);
+	}
+	
+	protected Spieler(Color farbe) {
+		this.farbe = farbe;
+		spielfiguren = new ArrayList<>();
 		spielfiguren = Collections.unmodifiableList(spielfiguren);
 	}
 	
@@ -68,5 +76,25 @@ public class Spieler {
 	 */
 	public boolean gewonnen() {
 		return false;
+	}
+	
+	public boolean isComputer() {
+		return computerspieler;
+	}
+	
+	public void setComputer() {
+		computerspieler = true;
+	}
+	
+	public void setMensch() {
+		computerspieler = false;
+	}
+	
+	public int getNummer() {
+		return nummer;
+	}
+
+	public void setNummer(int nummer) {
+		this.nummer = nummer;
 	}
 }

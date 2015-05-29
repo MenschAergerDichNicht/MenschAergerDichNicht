@@ -22,8 +22,9 @@ public class Spielbrett extends Observable{
 	private int anzahlWuerfe = 0;
 	private int letzteAugenzahl = 0;
 	private Map<Integer, Spielfigur> figurAusPosition = new HashMap<>();
-	
-	
+	private boolean wurdeGezogen = true;
+
+
 	/**
 	 * @param spieler eine Liste von Spielern die Teilnehmen
 	 * @param regeln das Regelobjekt für den gewünschten Spielablauf
@@ -46,11 +47,13 @@ public class Spielbrett extends Observable{
 		aktualisiereMap();
 		
 		setChanged();
-		notifyObservers(figur);
+		notifyObservers(figurAusPosition);
 		
-		if(!regeln.nochMalWuerfeln(amZug, anzahlWuerfe, felderVor)) {
-			zugFertig();
-		}
+		wurdeGezogen = true;
+	}
+	
+	public void bewegeFigur(Spielfigur figur) {
+		bewegeFigur(figur, letzteAugenzahl);
 	}
 	
 	/**
@@ -64,12 +67,19 @@ public class Spielbrett extends Observable{
 		if(figurAusPosition.get(startfeld) == null) {
 			figur.setPosition(startfeld);
 			figurAusPosition.put(startfeld, figur);
+			wurdeGezogen = true;
+			anzahlWuerfe = 0;
+			setChanged();
 		}
 		else if(figurAusPosition.get(startfeld).getSpieler() != figur.getSpieler()) {
 			figurAusPosition.get(startfeld).setPosition(-1);
 			figur.setPosition(startfeld);
 			figurAusPosition.put(startfeld, figur);
+			wurdeGezogen = true;
+			anzahlWuerfe = 0;
+			setChanged();
 		}
+		notifyObservers(figurAusPosition);
 	}
 	
 	/**
@@ -77,7 +87,11 @@ public class Spielbrett extends Observable{
 	 * @return true, wenn sie mit der vorliegenden Augenzahl bewegt werden kann.
 	 */
 	public boolean bewegenMoeglich(Spielfigur figur) {
-		return regeln.bewegenMoeglich(figurAusPosition, figur, letzteAugenzahl);
+		
+		if(figur != null && figur.getSpieler() == amZug && !wurdeGezogen) {
+			return regeln.bewegenMoeglich(figurAusPosition, figur, letzteAugenzahl);
+		}
+		return false;
 	}
 	
 	/**
@@ -103,8 +117,7 @@ public class Spielbrett extends Observable{
 	public int wuerfeln() {
 		anzahlWuerfe++;
 		letzteAugenzahl = regeln.wuerfel();
-		setChanged();
-		notifyObservers(letzteAugenzahl);
+		wurdeGezogen = false;
 		return letzteAugenzahl;
 	}
 	
@@ -132,8 +145,15 @@ public class Spielbrett extends Observable{
 			werIstDran = spieler.iterator();
 			amZug = werIstDran.next();
 		}
-		setChanged();
-		notifyObservers(amZug);
+		wurdeGezogen = true;
+		if(amZug.getName() != null) {
+			setChanged();
+			notifyObservers(amZug);
+		}
+		else{
+			zugFertig();
+		}
+		
 	}
 
 	/**
@@ -155,6 +175,20 @@ public class Spielbrett extends Observable{
 	 */
 	public List<Spielfigur> getOptionen() {
 		return regeln.getOptionen(figurAusPosition, amZug, letzteAugenzahl);
+	}
+	
+	private boolean keineFigurDraussen(Spieler spieler) {
+		for(Spielfigur figur:spieler.getSpielfiguren()) {
+			if(figur.getPosition() >= 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean getNochmalWuerfeln() {
+		return regeln.nochMalWuerfeln(amZug, anzahlWuerfe, letzteAugenzahl) 
+				&& (wurdeGezogen || keineFigurDraussen(amZug));
 	}
 	
 }

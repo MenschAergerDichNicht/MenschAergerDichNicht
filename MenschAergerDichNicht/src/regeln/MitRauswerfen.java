@@ -138,10 +138,7 @@ public class MitRauswerfen implements IRegeln{
 			Spielfigur figur, int augenzahl) {
 		// TODO Auto-generated method stub
 		int zaehler=0;
-		int neuePosFeld= figur.getPosition() + augenzahl;
-		
-		//int	neuePosHaus = figur.getHeimatfeld() + augenzahl;
-		
+		int neuePosFeld= figur.getPosition() + augenzahl;	
 		
 		//immer von Startfeld möglich, außer eigene Figur steht auf neuer Position
 		if(figur.getPosition() == figur.getStartfeld() && (figurAusPosition.get(neuePosFeld) == null
@@ -172,10 +169,17 @@ public class MitRauswerfen implements IRegeln{
 			}
 		}
 		
+		//Bei 6 nicht aus Haus, wenn jemand auf Startfeld steht
+		if(augenzahl==6 && figur.getPosition()<0 && figur.getHeimatfeld()==0 
+				&& figurAusPosition.get(figur.getStartfeld())!=null){
+			return false;
+		}
+		
 		//Bei 6 nur aus Haus ziehen
 		if(augenzahl==6 && figur.getPosition() > 0){
 			for(int i=0;i<4;i++){
-				if (figur.getSpieler().getSpielfiguren().get(i).getPosition()<0 && figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld() == 0){
+				if (figur.getSpieler().getSpielfiguren().get(i).getPosition()<0 && figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld() == 0
+						&& figurAusPosition.get(figur.getStartfeld())==null){
 					return false;
 				}
 			}

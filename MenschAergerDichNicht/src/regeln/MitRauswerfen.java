@@ -40,9 +40,10 @@ public class MitRauswerfen implements IRegeln{
 			int letzteAugenzahl) {
 		// TODO Auto-generated method stub
 		//wenn noch nicht 3mal gewï¿œrftelt wurde und alle im Haus stehen
-			if(wieOftSchonGewuerfelt < 3 && spieler.getSpielfiguren().get(0).getPosition() < 0
-					&& spieler.getSpielfiguren().get(1).getPosition() < 0 && spieler.getSpielfiguren().get(2).getPosition() < 0
-					&& spieler.getSpielfiguren().get(3).getPosition() < 0){
+		if(wieOftSchonGewuerfelt < 3 && spieler.getSpielfiguren().get(0).getPosition() < 0 && spieler.getSpielfiguren().get(0).getHeimatfeld()==0
+					&& spieler.getSpielfiguren().get(1).getPosition() < 0  && spieler.getSpielfiguren().get(1).getHeimatfeld()==0
+					&& spieler.getSpielfiguren().get(2).getPosition() < 0 && spieler.getSpielfiguren().get(2).getHeimatfeld()==0
+					&& spieler.getSpielfiguren().get(3).getPosition() < 0 && spieler.getSpielfiguren().get(3).getHeimatfeld()==0){
 				return true;
 			}//6 gewï¿œrfelt muss vom Startfeld runter
 			else if(letzteAugenzahl == 6){

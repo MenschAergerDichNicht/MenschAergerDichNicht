@@ -177,7 +177,7 @@ public class MitRauswerfen implements IRegeln{
 		}
 		
 		//Bei 6 nur aus Haus ziehen
-		if(augenzahl==6 && figur.getPosition() > 0){
+		if(augenzahl==6 && figur.getPosition() >= 0){
 			for(int i=0;i<4;i++){
 				if (figur.getSpieler().getSpielfiguren().get(i).getPosition()<0 && figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld() == 0
 						&& (figurAusPosition.get(figur.getStartfeld())==null || figurAusPosition.get(figur.getStartfeld()).getSpieler() != figur.getSpieler())){

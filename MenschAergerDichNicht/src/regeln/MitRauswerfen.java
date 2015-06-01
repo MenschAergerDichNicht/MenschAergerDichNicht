@@ -16,6 +16,20 @@ import basis.IRegeln;
 public class MitRauswerfen implements IRegeln{
 	
 	private final int SPIELFELDGROESSE = 39;
+	
+	private boolean jemandImHaus (Spielfigur figur){
+		int zaehler=0;
+		for (int i=0; i<4; i++){
+			if(figur.getSpieler().getSpielfiguren().get(i).getPosition()<0 && figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld()==0){
+				zaehler++;
+			}
+		}
+		
+		if(zaehler>0){
+			return true;
+		}
+		return false;
+	}
 
 	/**Reprï¿œsentiert den Wï¿œrfel
 	 * @return die Augenanzahl des Wï¿œrfels
@@ -148,21 +162,23 @@ public class MitRauswerfen implements IRegeln{
 			return true;
 		}
 		
-		//Figur steht nicht auf Startfeld, aber andere eigene die ziehen kann(keine eigene im Weg)
+		//Figur steht nicht auf Startfeld, aber andere eigene die ziehen kann(keine eigene im Weg) au�er niemand mehr im Haus
+		if(jemandImHaus(figur)==true){
 		for(int i=0; i<4; i++){
 			if(figur.getPosition() != figur.getStartfeld() &&
-			   (figur.getSpieler().getSpielfiguren().get(i).getPosition() == figur.getStartfeld()
-			   && (figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) == null
-			   || (figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) != null
-			   && figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl).getSpieler()
-			   != figur.getSpieler())))){ 
-					return false; 
+					(figur.getSpieler().getSpielfiguren().get(i).getPosition() == figur.getStartfeld()
+					&& (figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) == null
+					|| (figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) != null
+					&& figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl).getSpieler()
+					!= figur.getSpieler())))){ 
+						return false; 
 			}
+		}
 		}
 		
 		//Schlagzwang
 		for(int i=0; i<4; i++){
-			if(augenzahl != 6 && figur.getSpieler().getSpielfiguren().get(i).getPosition() > 0 &&
+			if(augenzahl != 6 && figur.getSpieler().getSpielfiguren().get(i).getPosition() >= 0 &&
 					(figurAusPosition.get(neuePosFeld) == null && (
 					figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) != null 
 					&& figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl).getSpieler() != figur.getSpieler()))) {

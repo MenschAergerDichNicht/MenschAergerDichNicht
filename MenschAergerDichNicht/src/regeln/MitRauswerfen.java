@@ -30,6 +30,10 @@ public class MitRauswerfen implements IRegeln{
 		}
 		return false;
 	}
+	
+	private int positionFigur(Spielfigur figur, int i){
+		return figur.getSpieler().getSpielfiguren().get(i).getPosition();
+	}
 
 	/**Reprï¿œsentiert den Wï¿œrfel
 	 * @return die Augenanzahl des Wï¿œrfels
@@ -166,10 +170,10 @@ public class MitRauswerfen implements IRegeln{
 		if(jemandImHaus(figur)==true){
 		for(int i=0; i<4; i++){
 			if(figur.getPosition() != figur.getStartfeld() &&
-					(figur.getSpieler().getSpielfiguren().get(i).getPosition() == figur.getStartfeld()
-					&& (figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) == null
-					|| (figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) != null
-					&& figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl).getSpieler()
+					(positionFigur(figur, i) == figur.getStartfeld()
+					&& (figurAusPosition.get(positionFigur(figur, i) + augenzahl) == null
+					|| (figurAusPosition.get(positionFigur(figur, i) + augenzahl) != null
+					&& figurAusPosition.get(positionFigur(figur, i) + augenzahl).getSpieler()
 					!= figur.getSpieler())))){ 
 						return false; 
 			}
@@ -180,8 +184,8 @@ public class MitRauswerfen implements IRegeln{
 		for(int i=0; i<4; i++){
 			if(augenzahl != 6 && figur.getSpieler().getSpielfiguren().get(i).getPosition() >= 0 &&
 					(figurAusPosition.get(neuePosFeld) == null && (
-					figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl) != null 
-					&& figurAusPosition.get(figur.getSpieler().getSpielfiguren().get(i).getPosition() + augenzahl).getSpieler() != figur.getSpieler()))) {
+					figurAusPosition.get(positionFigur(figur, i) + augenzahl) != null 
+					&& figurAusPosition.get(positionFigur(figur, i) + augenzahl).getSpieler() != figur.getSpieler()))) {
 				return false;
 			}
 		}
@@ -195,7 +199,7 @@ public class MitRauswerfen implements IRegeln{
 		//Bei 6 nur aus Haus ziehen
 		if(augenzahl==6 && figur.getPosition() >= 0){
 			for(int i=0;i<4;i++){
-				if (figur.getSpieler().getSpielfiguren().get(i).getPosition()<0 && figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld() == 0
+				if (positionFigur(figur, i)<0 && figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld() == 0
 						&& (figurAusPosition.get(figur.getStartfeld())==null || figurAusPosition.get(figur.getStartfeld()).getSpieler() != figur.getSpieler())){
 					return false;
 				}
@@ -228,7 +232,7 @@ public class MitRauswerfen implements IRegeln{
 		
 		//Wenn alle im Haus stehen und keine 6 gewï¿œrfelt wurde
 		for(int i=0; i<=3; i++){
-			if(augenzahl != 6 && figur.getSpieler().getSpielfiguren().get(i).getPosition() < 0  
+			if(augenzahl != 6 && positionFigur(figur, i) < 0  
 					&& figur.getHeimatfeld() == 0){
 				zaehler++;
 			}

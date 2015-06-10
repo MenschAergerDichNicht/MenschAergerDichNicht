@@ -8,6 +8,8 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import logik.Spielbrett;
@@ -35,6 +37,13 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 				}
 				else {
 					spielbrett.bewegeFigur(figur);
+					if(figur.getSpieler().gewonnen()) {
+						GewonnenFenster gewonnenFenster = new GewonnenFenster(figur.getSpieler());
+						gewonnenFenster.setVisible(true);
+						gewonnenFenster.addMouseListener(this);
+						JFrame spielframe = (JFrame)((JComponent) e.getSource()).getTopLevelAncestor();
+						spielframe.setEnabled(false);
+					}
 				}
 				kreis.repaint();
 				letzterAgierenderSpieler = spielbrett.getAmZug();
@@ -55,7 +64,26 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 		}
 		
 		else if(e.getSource().getClass().equals(JButton.class)) {
-			zugFertig();
+			JButton button = (JButton) e.getSource();
+			if(button.getText().equals("Zug beenden")) {
+				zugFertig();
+			}
+			else if(button.getText().equals("Beenden")) {
+				JFrame frame = (JFrame) button.getTopLevelAncestor();
+				frame.dispose();
+				System.exit(0);
+			}
+			
+			else if(button.getText().equals("Neues Spiel")) {
+				JFrame frame = (JFrame) button.getTopLevelAncestor();
+				frame.dispose();
+				Einstellungen einstellungen = new Einstellungen(new EinstellungsController());
+				einstellungen.setVisible(true);
+			}
+			
+			else if(button.getText().equals("Nochmal")) {
+				
+			}
 		}
 		
 

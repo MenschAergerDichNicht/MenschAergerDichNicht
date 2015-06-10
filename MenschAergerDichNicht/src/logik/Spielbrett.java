@@ -191,4 +191,8 @@ public class Spielbrett extends Observable{
 				&& (wurdeGezogen || keineFigurDraussen(amZug));
 	}
 	
+	public boolean wurdeGezogen() {
+		return wurdeGezogen;
+	}
+	
 }

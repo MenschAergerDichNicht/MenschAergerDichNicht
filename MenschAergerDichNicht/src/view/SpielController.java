@@ -50,7 +50,8 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 			}
 		}
 		else if(e.getSource().getClass().equals(Wuerfel.class)) {
-			if(spielbrett.getNochmalWuerfeln()) {
+			if(spielbrett.getNochmalWuerfeln() 
+					&& !spielbrett.getOptionen().isEmpty()) {
 				wuerfel = (Wuerfel) e.getSource();
 				if(!wuerfel.isRunning()) {
 					wuerfel.zeigeZahl(spielbrett.wuerfeln());
@@ -65,7 +66,16 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 		
 		else if(e.getSource().getClass().equals(JButton.class)) {
 			JButton button = (JButton) e.getSource();
-			if(button.getText().equals("Zug beenden")) {
+			if(button.getText().equals("Zug beenden")
+					/*
+					 * Wenn der Spieler nicht noch einmal würfeln darf
+					 * und er gezogen hat oder keine Option hat dies zu tun
+					 * kann der Zug beendet werden.
+					 */
+					&& !spielbrett.getNochmalWuerfeln()
+					&& (spielbrett.wurdeGezogen() 
+							|| spielbrett.getOptionen().isEmpty())
+			) {
 				zugFertig();
 			}
 			else if(button.getText().equals("Beenden")) {

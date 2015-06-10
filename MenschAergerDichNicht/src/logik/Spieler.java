@@ -75,7 +75,11 @@ public class Spieler {
 	 * false, wenn nicht.
 	 */
 	public boolean gewonnen() {
-		return false;
+		for(Spielfigur figur : spielfiguren) {
+			if(figur.getHeimatfeld() < 1)
+				return false;
+		}
+		return true;
 	}
 	
 	public boolean isComputer() {

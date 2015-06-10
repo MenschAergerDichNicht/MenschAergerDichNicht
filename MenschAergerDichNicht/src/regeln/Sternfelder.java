@@ -7,17 +7,9 @@ import logik.Spieler;
 import logik.Spielfigur;
 import basis.IRegeln;
 
-/**
- * Diese Klasse liefert die Regeln f�r das Spiel, wenn das Rauswerfen verboten wurde
- * @author lea
- */
-public class OhneRauswerfen extends MitRauswerfen implements IRegeln{
+public class Sternfelder extends MitRauswerfen implements IRegeln {
 	
-	private final int SPIELFELDGROESSE=39;
-	
-	private int positionFigur(Spielfigur figur, int i){
-		return figur.getSpieler().getSpielfiguren().get(i).getPosition();
-	}
+	private final int SPIELFELDGROESSE = 39;
 	
 	private boolean jemandImHaus (Spielfigur figur){
 		int zaehler=0;
@@ -31,6 +23,10 @@ public class OhneRauswerfen extends MitRauswerfen implements IRegeln{
 			return true;
 		}
 		return false;
+	}
+	
+	private int positionFigur(Spielfigur figur, int i){
+		return figur.getSpieler().getSpielfiguren().get(i).getPosition();
 	}
 
 	@Override
@@ -64,9 +60,21 @@ public class OhneRauswerfen extends MitRauswerfen implements IRegeln{
 			figur.setHeimatfeld(felderJetztGelaufen - SPIELFELDGROESSE);
 		}
 		else {
-	
+			Spielfigur figurAufZielposition = 
+					figurAusPosition.get(neuePosition);
+			/*
+			 * Schlagen.
+			 * Ob die andere Figur die eines Gegners ist,
+			 * sollte bewegenMoeglich abdecken 
+			 */
+			
+			if(figurAufZielposition != null) {
+				figurAufZielposition.setPosition(-1);
+			}
+			
 			figur.setPosition(neuePosition);
 		}
+		
 	}
 	
 	private int getFelderBewegt(int start, int position) {
@@ -75,7 +83,6 @@ public class OhneRauswerfen extends MitRauswerfen implements IRegeln{
 		}
 		return SPIELFELDGROESSE - start + position;
 	}
-
 
 	@Override
 	public boolean bewegenMoeglich(Map<Integer, Spielfigur> figurAusPosition,
@@ -149,6 +156,15 @@ public class OhneRauswerfen extends MitRauswerfen implements IRegeln{
 			if(zaehler == 4){
 				return false;
 			}
+		}
+		
+		//Bei Sternfeldern nicht schlagen
+		if((figurAusPosition.get(neuePosFeld).getPosition() == 2 || figurAusPosition.get(neuePosFeld).getPosition() == 6
+			|| figurAusPosition.get(neuePosFeld).getPosition() == 12 || figurAusPosition.get(neuePosFeld).getPosition() == 16
+			|| figurAusPosition.get(neuePosFeld).getPosition() == 22 || figurAusPosition.get(neuePosFeld).getPosition() == 26
+			|| figurAusPosition.get(neuePosFeld).getPosition() == 32 || figurAusPosition.get(neuePosFeld).getPosition() == 36)
+			&& figurAusPosition.get(neuePosFeld) != null){
+			return false;
 		}
 			
 		return true;

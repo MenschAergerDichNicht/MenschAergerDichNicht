@@ -50,8 +50,15 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 			}
 		}
 		else if(e.getSource().getClass().equals(Wuerfel.class)) {
-			if(spielbrett.getNochmalWuerfeln() 
-					&& !spielbrett.getOptionen().isEmpty()) {
+			/*
+			 * Es darf nur gewürfelt werden, wenn es die Regeln erlauben und
+			 * bereits gezogen worden ist, oder es keine Optionen gibt dies
+			 * zu tun.
+			 */
+			if(spielbrett.getNochmalWuerfeln()
+					&& (spielbrett.wurdeGezogen() 
+							|| spielbrett.getOptionen().isEmpty())
+					) {
 				wuerfel = (Wuerfel) e.getSource();
 				if(!wuerfel.isRunning()) {
 					wuerfel.zeigeZahl(spielbrett.wuerfeln());

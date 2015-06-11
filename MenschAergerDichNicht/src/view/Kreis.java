@@ -103,15 +103,16 @@ class Kreis extends JComponent implements Observer{
 				}
 			}
 			
-			if(!heimatfeld && feldnummer >= 100 && besetzer == null) {
+			if(!heimatfeld && feldnummer >= 100) {
 				boolean gefunden = false;
 				Spielbrett brett = (Spielbrett) o;
 				for(Spieler spieler:brett.getSpieler()) {
 					for(Spielfigur figur: spieler.getSpielfiguren()) {
 						if(figur.getHeimatfeld() >= 1) {
 							int ermittelteFeldnummer = 
-									(spieler.getNummer() * 100) 
-									+ 5 + figur.getHeimatfeld();
+									(spieler.getNummer() * 100) + figur.getHeimatfeld();
+							
+							System.out.println(ermittelteFeldnummer);
 							
 							if(feldnummer == ermittelteFeldnummer) {
 								besetzer = figur;

@@ -106,36 +106,39 @@ public class MitRauswerfen implements IRegeln{
 			figur.setHeimatfeld(felderZuLaufen);
 		}
 		*/
-		
-		int felderBisherGelaufen = getFelderBewegt(figur.getStartfeld(), 
-				figur.getPosition());
-		int felderJetztGelaufen = felderBisherGelaufen + felderVor;
-		int neuePosition = figur.getPosition() + felderVor;
-		if(neuePosition > SPIELFELDGROESSE) {
-			neuePosition = neuePosition - SPIELFELDGROESSE - 1;
-		}
-		
-		//Ob der Platz ausreicht, sollte bewegenMoeglich abdecken.
-		if (felderJetztGelaufen > SPIELFELDGROESSE) {
-			figur.setPosition(-1);
-			figur.setHeimatfeld(felderJetztGelaufen - SPIELFELDGROESSE);
+		if(figur.getHeimatfeld() > 0) {
+			figur.setHeimatfeld(figur.getHeimatfeld() + felderVor);
 		}
 		else {
-			Spielfigur figurAufZielposition = 
-					figurAusPosition.get(neuePosition);
-			/*
-			 * Schlagen.
-			 * Ob die andere Figur die eines Gegners ist,
-			 * sollte bewegenMoeglich abdecken 
-			 */
-			
-			if(figurAufZielposition != null) {
-				figurAufZielposition.setPosition(-1);
+			int felderBisherGelaufen = getFelderBewegt(figur.getStartfeld(), 
+					figur.getPosition());
+			int felderJetztGelaufen = felderBisherGelaufen + felderVor;
+			int neuePosition = figur.getPosition() + felderVor;
+			if(neuePosition > SPIELFELDGROESSE) {
+				neuePosition = neuePosition - SPIELFELDGROESSE - 1;
 			}
 			
-			figur.setPosition(neuePosition);
+			//Ob der Platz ausreicht, sollte bewegenMoeglich abdecken.
+			if (felderJetztGelaufen > SPIELFELDGROESSE) {
+				figur.setPosition(-1);
+				figur.setHeimatfeld(felderJetztGelaufen - SPIELFELDGROESSE);
+			}
+			else {
+				Spielfigur figurAufZielposition = 
+						figurAusPosition.get(neuePosition);
+				/*
+				 * Schlagen.
+				 * Ob die andere Figur die eines Gegners ist,
+				 * sollte bewegenMoeglich abdecken 
+				 */
+				
+				if(figurAufZielposition != null) {
+					figurAufZielposition.setPosition(-1);
+				}
+				
+				figur.setPosition(neuePosition);
+			}
 		}
-		
 	}
 	
 	private int getFelderBewegt(int start, int position) {
@@ -166,7 +169,7 @@ public class MitRauswerfen implements IRegeln{
 			return true;
 		}
 		
-		//Figur steht nicht auf Startfeld, aber andere eigene die ziehen kann(keine eigene im Weg) au�er niemand mehr im Haus
+		//Figur steht nicht auf Startfeld, aber andere eigene die ziehen kann(keine eigene im Weg) au�er niemand mehr im Haus
 		if(jemandImHaus(figur)==true){
 		for(int i=0; i<4; i++){
 			if(figur.getPosition() != figur.getStartfeld() &&
@@ -197,10 +200,12 @@ public class MitRauswerfen implements IRegeln{
 		}
 		
 		//Bei 6 nur aus Haus ziehen
-		if(augenzahl==6 && figur.getPosition() >= 0){
+		if(augenzahl==6 && (figur.getPosition() >= 0 || figur.getHeimatfeld() > 0)){
 			for(int i=0;i<4;i++){
-				if (positionFigur(figur, i)<0 && figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld() == 0
-						&& (figurAusPosition.get(figur.getStartfeld())==null || figurAusPosition.get(figur.getStartfeld()).getSpieler() != figur.getSpieler())){
+				if (positionFigur(figur, i)<0 
+						&& figur.getSpieler().getSpielfiguren().get(i).getHeimatfeld() < 1
+						&& (figurAusPosition.get(figur.getStartfeld()) == null 
+						|| figurAusPosition.get(figur.getStartfeld()).getSpieler() != figur.getSpieler())){
 					return false;
 				}
 			}
@@ -240,8 +245,25 @@ public class MitRauswerfen implements IRegeln{
 				return false;
 			}
 		}
+		
+		//Wenn die Augenzahl zu hoch ist und über das Feld hinaus gehen würde
+		
+		if(figur.getPosition() >= 0) {
+			int felderBisherGelaufen = getFelderBewegt(figur.getStartfeld(), 
+					figur.getPosition());
+			int felderJetztGelaufen = felderBisherGelaufen + augenzahl;
+			
+			if(felderJetztGelaufen > SPIELFELDGROESSE)
+				return false;
+		}
+		else if(figur.getHeimatfeld() > 0) {
+			if((4 - figur.getHeimatfeld() - augenzahl) < 0)
+				return false;
+		}
 			
 		return true;
+		
+		
 	}
 
 	/**

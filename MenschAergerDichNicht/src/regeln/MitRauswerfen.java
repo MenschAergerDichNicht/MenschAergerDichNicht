@@ -145,7 +145,7 @@ public class MitRauswerfen implements IRegeln{
 		if(position <= SPIELFELDGROESSE && position >= start) {
 			return position - start;
 		}
-		return SPIELFELDGROESSE - start + position;
+		return SPIELFELDGROESSE - start + position + 1;
 	}
 
 	/**
@@ -163,9 +163,12 @@ public class MitRauswerfen implements IRegeln{
 		int neuePosFeld= figur.getPosition() + augenzahl;	
 		
 		//immer von Startfeld möglich, außer eigene Figur steht auf neuer Position
-		if(figur.getPosition() == figur.getStartfeld() && (figurAusPosition.get(neuePosFeld) == null
-				||( figurAusPosition.get(neuePosFeld) != null  &&
-				figurAusPosition.get(neuePosFeld).getSpieler() != figur.getSpieler()))){
+		if(figur.getPosition() == figur.getStartfeld() 
+				&& (figurAusPosition.get(neuePosFeld) == null
+					||( figurAusPosition.get(neuePosFeld) != null 
+						&&figurAusPosition.get(neuePosFeld).getSpieler() != figur.getSpieler())
+					)
+		){
 			return true;
 		}
 		
@@ -247,19 +250,38 @@ public class MitRauswerfen implements IRegeln{
 		}
 		
 		//Wenn die Augenzahl zu hoch ist und über das Feld hinaus gehen würde
-		
+				
 		if(figur.getPosition() >= 0) {
 			int felderBisherGelaufen = getFelderBewegt(figur.getStartfeld(), 
 					figur.getPosition());
 			int felderJetztGelaufen = felderBisherGelaufen + augenzahl;
 			
-			if(felderJetztGelaufen > SPIELFELDGROESSE)
+			if(felderJetztGelaufen > SPIELFELDGROESSE + 4)
 				return false;
 		}
 		else if(figur.getHeimatfeld() > 0) {
 			if((4 - figur.getHeimatfeld() - augenzahl) < 0)
 				return false;
 		}
+		
+		//Wenn eine eigene Figur im Zielfeld im Weg steht
+		
+		int neuePosition = getFelderBewegt(figur.getStartfeld(), 
+				figur.getPosition()) + augenzahl;
+		if(neuePosition > SPIELFELDGROESSE) {
+			int zielfeldPosition = neuePosition - SPIELFELDGROESSE;
+			for(int i = 0; i < 4; i++) {
+				Spielfigur andereFigur = figur.getSpieler().getSpielfiguren().get(i);
+				if (andereFigur != figur) {
+					if(andereFigur.getHeimatfeld() > 0 
+							&& andereFigur.getHeimatfeld() <= zielfeldPosition)
+						return false;
+					
+				}
+			}
+		}
+		
+		
 			
 		return true;
 		

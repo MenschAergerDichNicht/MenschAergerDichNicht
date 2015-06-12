@@ -2,27 +2,32 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import logik.Spielbrett;
 import logik.Spieler;
+import logik.Spielerfabrik;
 import logik.Spielfigur;
 
-public class SpielController implements ActionListener, MouseListener, MouseMotionListener {
+public class SpielController implements ActionListener, MouseListener, MouseMotionListener, KeyListener {
 	Spielbrett spielbrett;
 	Spieler letzterAgierenderSpieler;
 	Wuerfel wuerfel;
+	JFrame spielframe;
 	
-	public SpielController(Spielbrett brett) {
+	public SpielController(Spielbrett brett, JFrame spielframe) {
 		spielbrett = brett;
+		this.spielframe = spielframe;
 	}
 
 	@Override
@@ -38,10 +43,20 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 				else {
 					spielbrett.bewegeFigur(figur);
 					if(figur.getSpieler().gewonnen()) {
-						GewonnenFenster gewonnenFenster = new GewonnenFenster(figur.getSpieler());
+						int anzahlNichtGewonnen = 0;
+						boolean weiter = false;
+						for(Spieler spieler:spielbrett.getSpieler()) {
+							if(!spieler.gewonnen())
+								anzahlNichtGewonnen++;
+						}
+						if(anzahlNichtGewonnen > 1)
+							weiter = true;
+						GewonnenFenster gewonnenFenster = 
+								new GewonnenFenster(
+										figur.getSpieler(), this, weiter
+										);
 						gewonnenFenster.setVisible(true);
 						gewonnenFenster.addMouseListener(this);
-						JFrame spielframe = (JFrame)((JComponent) e.getSource()).getTopLevelAncestor();
 						spielframe.setEnabled(false);
 					}
 				}
@@ -85,21 +100,35 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 			) {
 				zugFertig();
 			}
+			
 			else if(button.getText().equals("Beenden")) {
-				JFrame frame = (JFrame) button.getTopLevelAncestor();
-				frame.dispose();
 				System.exit(0);
 			}
 			
 			else if(button.getText().equals("Neues Spiel")) {
-				JFrame frame = (JFrame) button.getTopLevelAncestor();
-				frame.dispose();
+				spielframe.dispose();
 				Einstellungen einstellungen = new Einstellungen(new EinstellungsController());
 				einstellungen.setVisible(true);
+				((JFrame) button.getTopLevelAncestor()).dispose();
 			}
 			
 			else if(button.getText().equals("Nochmal")) {
-				
+				Spielerfabrik fabrik = new Spielerfabrik(spielbrett.getSpieler().size());
+				List<Spieler> neueSpielerListe = new LinkedList<>();
+				for(Spieler spieler:spielbrett.getSpieler()) {
+					neueSpielerListe.add(fabrik.getSpieler(spieler.getFarbe(), spieler.getName()));
+				}
+				Spielbrett neuesBrett = new Spielbrett(neueSpielerListe, spielbrett.getRegeln());
+				SpielbrettGui neuerFrame = new SpielbrettGui(neuesBrett, false);
+				neuerFrame.setBounds(spielframe.getBounds());
+				spielframe.dispose();
+				neuerFrame.setVisible(true);
+				((JFrame) button.getTopLevelAncestor()).dispose();
+			}
+			
+			else if(button.getText().equals("Weiter")) {
+				spielframe.setEnabled(true);
+				((JFrame) button.getTopLevelAncestor()).dispose();
 			}
 		}
 		
@@ -108,6 +137,8 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 	
 	private void zugFertig() {
 		spielbrett.zugFertig();
+		if(spielbrett.getAmZug().gewonnen())
+			zugFertig();
 
 //		while(spielbrett.getAmZug().isComputer()) {
 //			try {
@@ -121,14 +152,10 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -153,20 +180,14 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void computerZug() throws InterruptedException {
@@ -187,6 +208,24 @@ public class SpielController implements ActionListener, MouseListener, MouseMoti
 		}
 		spielbrett.zugFertig();	
 		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		GewonnenFenster gewonnenFenster = new GewonnenFenster(spielbrett.getAmZug(), this, true);
+		gewonnenFenster.setVisible(true);
+		gewonnenFenster.addMouseListener(this);
+		gewonnenFenster.setFocusable(true);
+		spielframe.setEnabled(false);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
 	}
 	
 }

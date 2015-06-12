@@ -20,9 +20,9 @@ class Kreis extends JComponent implements Observer{
 	private static final long serialVersionUID = 1L;
 	private Color color;
 	private int feldnummer;
-	private Spielfigur besetzer;
+	protected Spielfigur besetzer;
 	private Spielfigur ersterBesetzer;
-	private boolean komplement = false;
+	protected boolean komplement = false;
 	private boolean heimatfeld = false;
 
 	
@@ -111,8 +111,6 @@ class Kreis extends JComponent implements Observer{
 						if(figur.getHeimatfeld() >= 1) {
 							int ermittelteFeldnummer = 
 									(spieler.getNummer() * 100) + figur.getHeimatfeld();
-							
-							System.out.println(ermittelteFeldnummer);
 							
 							if(feldnummer == ermittelteFeldnummer) {
 								besetzer = figur;

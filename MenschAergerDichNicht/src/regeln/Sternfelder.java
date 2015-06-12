@@ -1,16 +1,17 @@
 package regeln;
 
-import java.util.List;
 import java.util.Map;
 
-import logik.Spieler;
 import logik.Spielfigur;
 import basis.IRegeln;
 
 public class Sternfelder extends MitRauswerfen implements IRegeln {
 	
-	private final int SPIELFELDGROESSE = 39;
-	
+	public Sternfelder(boolean sichereFelder, boolean mitRauswerfen,
+			boolean nichtUeberspringen) {
+		super(sichereFelder, mitRauswerfen, nichtUeberspringen);
+	}
+
 	private boolean jemandImHaus (Spielfigur figur){
 		int zaehler=0;
 		for (int i=0; i<4; i++){
@@ -30,61 +31,6 @@ public class Sternfelder extends MitRauswerfen implements IRegeln {
 	}
 
 	@Override
-	public int wuerfel() {
-		// TODO Auto-generated method stub
-		return super.wuerfel();
-	}
-
-	@Override
-	public boolean nochMalWuerfeln(Spieler spieler, int wieOftSchonGewuerfelt,
-			int letzteAugenzahl) {
-		// TODO Auto-generated method stub
-		return super.nochMalWuerfeln(spieler, wieOftSchonGewuerfelt, letzteAugenzahl);
-	}
-
-	@Override
-	public void bewegeFigur(Map<Integer, Spielfigur> figurAusPosition,
-			Spielfigur figur, int felderVor) {
-		// TODO Auto-generated method stub
-		int felderBisherGelaufen = getFelderBewegt(figur.getStartfeld(), 
-				figur.getPosition());
-		int felderJetztGelaufen = felderBisherGelaufen + felderVor;
-		int neuePosition = figur.getPosition() + felderVor;
-		if(neuePosition > SPIELFELDGROESSE) {
-			neuePosition = neuePosition - SPIELFELDGROESSE - 1;
-		}
-		
-		//Ob der Platz ausreicht, sollte bewegenMoeglich abdecken.
-		if (felderJetztGelaufen > SPIELFELDGROESSE) {
-			figur.setPosition(-1);
-			figur.setHeimatfeld(felderJetztGelaufen - SPIELFELDGROESSE);
-		}
-		else {
-			Spielfigur figurAufZielposition = 
-					figurAusPosition.get(neuePosition);
-			/*
-			 * Schlagen.
-			 * Ob die andere Figur die eines Gegners ist,
-			 * sollte bewegenMoeglich abdecken 
-			 */
-			
-			if(figurAufZielposition != null) {
-				figurAufZielposition.setPosition(-1);
-			}
-			
-			figur.setPosition(neuePosition);
-		}
-		
-	}
-	
-	private int getFelderBewegt(int start, int position) {
-		if(position <= SPIELFELDGROESSE && position >= start) {
-			return position - start;
-		}
-		return SPIELFELDGROESSE - start + position;
-	}
-
-	@Override
 	public boolean bewegenMoeglich(Map<Integer, Spielfigur> figurAusPosition,
 			Spielfigur figur, int augenzahl) {
 		// TODO Auto-generated method stub
@@ -96,7 +42,7 @@ public class Sternfelder extends MitRauswerfen implements IRegeln {
 			return true;
 		}
 		
-		//Figur steht nicht auf Startfeld, aber andere eigene die ziehen kann(keine Figur im Weg) außer niemand mehr im Haus
+		//Figur steht nicht auf Startfeld, aber andere eigene die ziehen kann(keine Figur im Weg) auï¿½er niemand mehr im Haus
 		if(jemandImHaus(figur)==true){
 		for(int i=0; i<4; i++){
 			if(figur.getPosition() != figur.getStartfeld() &&
@@ -168,20 +114,6 @@ public class Sternfelder extends MitRauswerfen implements IRegeln {
 		}
 			
 		return true;
-	}
-
-	@Override
-	public List<Spielfigur> getOptionen(
-			Map<Integer, Spielfigur> figurAusPosition, Spieler amZug,
-			int augenzahl) {
-		// TODO Auto-generated method stub
-		return super.getOptionen(figurAusPosition, amZug, augenzahl);
-	}
-
-	@Override
-	public boolean gewonnen(Spieler spieler) {
-		// TODO Auto-generated method stub
-		return super.gewonnen(spieler);
 	}
 
 }

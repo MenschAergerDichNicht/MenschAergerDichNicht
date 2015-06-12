@@ -14,6 +14,11 @@ import basis.IRegeln;
  */
 public class HeimOhneUeberspringen extends MitRauswerfen implements IRegeln{
 
+	public HeimOhneUeberspringen(boolean sichereFelder, boolean mitRauswerfen,
+			boolean nichtUeberspringen) {
+		super(sichereFelder, mitRauswerfen, nichtUeberspringen);
+	}
+
 	@Override
 	public int wuerfel() {
 		// TODO Auto-generated method stub

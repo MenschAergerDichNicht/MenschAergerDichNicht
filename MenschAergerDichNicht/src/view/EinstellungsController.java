@@ -84,13 +84,19 @@ public class EinstellungsController implements ActionListener, MouseListener {
 			List<Spieler> spieler = einstellungsframe.spieleinstellungen.getSpieler();
 			
 			//TODO Regeln mit Einstellungen verbinden
-			final Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen());
+			MitRauswerfen regeln = new MitRauswerfen(
+					einstellungsframe.spieleinstellungen.sichereFelder(), 
+					einstellungsframe.spieleinstellungen.mitRauswerfen(),
+					!einstellungsframe.spieleinstellungen.ueberspringenimHeimatbereich());
+			final Spielbrett brett = new Spielbrett(spieler, regeln);
 			
 			if(brett.getSpieler().size() < 4) {
 				
 			}
 			
-			SpielbrettGui frame = new SpielbrettGui(brett);
+			SpielbrettGui frame = new SpielbrettGui(
+					brett, einstellungsframe.spieleinstellungen.sichereFelder()
+					);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(800, 615);
 			frame.setVisible(true);

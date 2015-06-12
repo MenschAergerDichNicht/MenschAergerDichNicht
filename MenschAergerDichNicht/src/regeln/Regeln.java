@@ -15,7 +15,7 @@ public class Regeln implements IRegeln {
 	IRegeln getOptionen;
 	IRegeln gewonnen;
 	
-	IRegeln standard = new MitRauswerfen();
+	IRegeln standard = new MitRauswerfen(false, false, false);
 	
 	
 	public Regeln(IRegeln wuerfel, 

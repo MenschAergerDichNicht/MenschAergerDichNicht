@@ -49,6 +49,7 @@ public class SpielbrettGui extends JFrame implements Observer{
 	private SpielController controller;
 	private Spielbrett spielbrett;
 	private Map<Integer, Kreis> alleFelder = new HashMap<>();
+	private final boolean sternenfelder;
 	
 	public static void main(String args[]) {
 		LinkedList<Spieler> spieler = new LinkedList<>();
@@ -64,20 +65,22 @@ public class SpielbrettGui extends JFrame implements Observer{
 			spiel.setComputer();
 		}
 		
-		Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen());
+		Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen(false, true, true));
 		
-		SpielbrettGui sbg = new SpielbrettGui(brett);
+		SpielbrettGui sbg = new SpielbrettGui(brett, false);
 		sbg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		sbg.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		sbg.setSize(800, 615);
 		sbg.setVisible(true);
 	}
 	
-	public SpielbrettGui(Spielbrett brett) {
-		
+	public SpielbrettGui(Spielbrett brett, boolean sternenfelder) {
+		this.sternenfelder = sternenfelder;
 		spielbrett = brett;
 		spielbrett.addObserver(this);
-		controller = new SpielController(brett);
+		controller = new SpielController(brett, this);
+		this.addKeyListener(controller);
+		this.setFocusable(true);
 		
 		Container pane = getContentPane();
 		pane.setLayout(new BorderLayout());
@@ -91,7 +94,6 @@ public class SpielbrettGui extends JFrame implements Observer{
 		spielfeld.setLayout(new GridBagLayout());
 		spielfeld.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		spielfeld.setPreferredSize(new Dimension(600, 615));
-		
 		
 		//Array der Spielfelder, noch mit spieler verbinden
 		byte[][] weiss = {{5,6,5,7,5,7,5,7,2,3,4,5,7,8,9,10,11,1,11,1,2,3,4,5,7,8,9,10,5,7,5,7,5,7,6,7},{1,1,2,2,3,3,4,4,5,5,5,5,5,5,5,5,5,6,6,7,7,7,7,7,7,7,7,7,8,8,9,9,10,10,11,11}};
@@ -112,7 +114,21 @@ public class SpielbrettGui extends JFrame implements Observer{
 		for(int i = 0; i < x.length-1; i++) {
 			for(int j = 0; j < x[i].length; j++) {
 				int feldnummer = feldKoordinatenZuPosition[x[i][j]][x[i+1][j]];
-				Kreis kreis = new Kreis(color, feldnummer);
+				Kreis kreis;
+				if(sternenfelder && (feldnummer == 2
+						|| feldnummer == 6
+						|| feldnummer == 12
+						|| feldnummer == 16
+						|| feldnummer == 22
+						|| feldnummer == 26
+						|| feldnummer == 32
+						|| feldnummer == 36)
+				) {
+					kreis = new Stern(color, feldnummer);
+				}
+				else{
+					kreis = new Kreis(color, feldnummer);
+				}
 				alleFelder.put(feldnummer, kreis);
 				spielbrett.addObserver(kreis);
 				kreis.addMouseListener(controller);

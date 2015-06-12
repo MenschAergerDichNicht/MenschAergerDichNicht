@@ -30,7 +30,7 @@ public class NormaleRegelnTest {
 	@Before
 	public void setUp() throws Exception {
 		spielerliste = new LinkedList<>();
-		regeln = new MitRauswerfen();
+		regeln = new MitRauswerfen(false, true, true);
 		fabrik = new Spielerfabrik(2);
 		spielerliste.add(fabrik.getSpieler(Color.BLUE, "ole"));
 		spielerliste.add(fabrik.getSpieler(Color.RED, "lea"));

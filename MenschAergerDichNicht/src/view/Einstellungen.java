@@ -68,7 +68,7 @@ public class Einstellungen extends JFrame{
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel spielTitel = new JLabel("Mensch �rgere Dich Nicht");
+		JLabel spielTitel = new JLabel("Mensch \u00C4rgere Dich Nicht");
 		spielTitel.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		spielTitel.setHorizontalAlignment(SwingConstants.CENTER);
 		spielTitel.setBounds(0, 0, 688, 24);
@@ -88,7 +88,8 @@ public class Einstellungen extends JFrame{
 		spielbrett.setBounds(25, 93, 104, 15);
 		panel.add(spielbrett);
 		
-		String[] spielfeldgroessen = {"4 Spieler Feld", "6 Spieler Feld"};
+//		String[] spielfeldgroessen = {"4 Spieler Feld", "6 Spieler Feld"};
+		String[] spielfeldgroessen = {"4 Spieler Feld"};
 		JComboBox<String> groessenComboBox = new JComboBox<>(spielfeldgroessen);
 		groessenComboBox.setBounds(20, 110, 150, 24);
 		groessenComboBox.addActionListener(controller);
@@ -115,7 +116,7 @@ public class Einstellungen extends JFrame{
 		heimregel.setBounds(500, 243, 130, 15);
 		panel.add(heimregel);
 		
-		JComboBox<String> heimregelComboBox = new JComboBox<>(new String[]{"nicht �berspringen","�berspringen"});
+		JComboBox<String> heimregelComboBox = new JComboBox<>(new String[]{"nicht \u00FCberspringen","\u00FCberspringen"});
 		heimregelComboBox.setBounds(495, 260, 160, 24);
 		panel.add(heimregelComboBox);
 		
@@ -130,6 +131,7 @@ public class Einstellungen extends JFrame{
 		JLabel computer = new JLabel("Computer");
 		computer.setHorizontalAlignment(SwingConstants.CENTER);
 		computer.setBounds(202, 150, 80, 30);
+		computer.setVisible(false);
 		panel.add(computer);
 		
 		JTextField spieler1 = new JTextField("Spieler 1");
@@ -167,6 +169,7 @@ public class Einstellungen extends JFrame{
 		JCheckBox checkBoxComputerSpieler2 = new JCheckBox("");
 		checkBoxComputerSpieler2.setHorizontalAlignment(SwingConstants.CENTER);
 		checkBoxComputerSpieler2.setBounds(202, 220, 80, 30);
+		checkBoxComputerSpieler2.setVisible(false);
 		panel.add(checkBoxComputerSpieler2);
 		
 		spielereinstellungen.put(2, new SpielerEinstellungen(
@@ -191,6 +194,7 @@ public class Einstellungen extends JFrame{
 		JCheckBox checkBoxComputerSpieler3 = new JCheckBox("");
 		checkBoxComputerSpieler3.setHorizontalAlignment(SwingConstants.CENTER);
 		checkBoxComputerSpieler3.setBounds(202, 255, 80, 30);
+		checkBoxComputerSpieler3.setVisible(false);
 		panel.add(checkBoxComputerSpieler3);
 		
 		spielereinstellungen.put(3, new SpielerEinstellungen(
@@ -215,6 +219,7 @@ public class Einstellungen extends JFrame{
 		JCheckBox checkBoxComputerSpieler4 = new JCheckBox();
 		checkBoxComputerSpieler4.setHorizontalAlignment(SwingConstants.CENTER);
 		checkBoxComputerSpieler4.setBounds(202, 290, 80, 30);
+		checkBoxComputerSpieler4.setVisible(false);
 		panel.add(checkBoxComputerSpieler4);
 		
 		spielereinstellungen.put(4, new SpielerEinstellungen(

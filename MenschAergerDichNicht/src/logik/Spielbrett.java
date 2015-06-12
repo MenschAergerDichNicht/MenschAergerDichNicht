@@ -195,4 +195,8 @@ public class Spielbrett extends Observable{
 		return wurdeGezogen;
 	}
 	
+	public IRegeln getRegeln() {
+		return regeln;
+	}
+	
 }

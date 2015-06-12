@@ -16,6 +16,19 @@ import basis.IRegeln;
 public class MitRauswerfen implements IRegeln{
 	
 	private final int SPIELFELDGROESSE = 39;
+	private final boolean sichereFelder;
+	private final boolean mitRauswerfen;
+	private final boolean nichtUeberspringen;
+	
+	public MitRauswerfen(boolean sichereFelder, 
+			boolean mitRauswerfen, 
+			boolean nichtUeberspringen) {
+		
+		this.sichereFelder = sichereFelder;
+		this.mitRauswerfen = mitRauswerfen;
+		this.nichtUeberspringen = nichtUeberspringen;
+		
+	}
 	
 	private boolean jemandImHaus (Spielfigur figur){
 		int zaehler=0;
@@ -221,6 +234,13 @@ public class MitRauswerfen implements IRegeln{
 			return false;
 		}
 		
+		if(!mitRauswerfen) {
+			//Wenn Figur da steht (im Feld)   
+			if (figur.getPosition()>=0 &&(figurAusPosition.get(neuePosFeld) != null  && figur.getHeimatfeld() == 0)){
+				return false;
+			}
+		}
+		
 		//Wenn eigene Figur da steht (im Haus)
 		if(figur.getHeimatfeld() > 0 ) {
 			for(int i=1; i<=augenzahl; i++){
@@ -273,11 +293,37 @@ public class MitRauswerfen implements IRegeln{
 			for(int i = 0; i < 4; i++) {
 				Spielfigur andereFigur = figur.getSpieler().getSpielfiguren().get(i);
 				if (andereFigur != figur) {
-					if(andereFigur.getHeimatfeld() > 0 
-							&& andereFigur.getHeimatfeld() <= zielfeldPosition)
-						return false;
+					if(nichtUeberspringen) {
+						if(andereFigur.getHeimatfeld() > 0 
+								&& andereFigur.getHeimatfeld() <= zielfeldPosition
+							)
+							return false;
+					}
+					else {
+						if(andereFigur.getHeimatfeld() > 0 
+								&& andereFigur.getHeimatfeld() == zielfeldPosition
+							)
+							return false;
+					}
 					
 				}
+			}
+		}
+		
+		if(sichereFelder) {
+			//Bei Sternfeldern nicht schlagen
+			if((figurAusPosition.get(neuePosFeld) != null && (
+					figurAusPosition.get(neuePosFeld).getPosition() == 2 
+					|| figurAusPosition.get(neuePosFeld).getPosition() == 6
+					|| figurAusPosition.get(neuePosFeld).getPosition() == 12 
+					|| figurAusPosition.get(neuePosFeld).getPosition() == 16
+					|| figurAusPosition.get(neuePosFeld).getPosition() == 22
+					|| figurAusPosition.get(neuePosFeld).getPosition() == 26
+					|| figurAusPosition.get(neuePosFeld).getPosition() == 32 
+					|| figurAusPosition.get(neuePosFeld).getPosition() == 36)
+				)
+			){
+				return false;
 			}
 		}
 		

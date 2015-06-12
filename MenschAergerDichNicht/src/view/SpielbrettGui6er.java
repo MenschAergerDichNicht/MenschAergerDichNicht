@@ -75,7 +75,7 @@ public class SpielbrettGui6er extends JFrame implements Observer {
 //			spiel.setComputer();
 //		}
 		
-		Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen());
+		Spielbrett brett = new Spielbrett(spieler, new MitRauswerfen(false, true, false));
 		SpielbrettGui6er sbg = new SpielbrettGui6er(brett);
 		sbg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		sbg.setSize(825, 615);
@@ -86,7 +86,7 @@ public class SpielbrettGui6er extends JFrame implements Observer {
 		
 		spielbrett = brett;
 		spielbrett.addObserver(this);
-		controller = new SpielController(brett);
+		controller = new SpielController(brett, this);
 		
 		Container pane = getContentPane();
 		pane.setLayout(new BorderLayout());
